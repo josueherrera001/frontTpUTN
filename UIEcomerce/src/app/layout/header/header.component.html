@@ -1,0 +1,173 @@
+<div class="bg-primary-600 text-white text-sm py-2 px-4">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="flex space-x-4">
+      <a href="#" class="hover:text-white"><i class="fas fa-phone-alt mr-1"></i> (+549) xxx xxx xxxx</a>
+      <a href="#" class="hover:text-white"><i class="fas fa-envelope mr-1"></i> contacto&#64;tienda.com</a>
+    </div>
+    <div class="flex space-x-4">
+      <a href="#" class="hover:text-white">Ayuda</a>
+      <a href="#" class="hover:text-white">Seguimiento</a>
+    </div>
+  </div>
+</div>
+
+<!-- Menú Principal -->
+<nav class="bg-white shadow-md sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <img class="w-8 h-8 mr-2 rounded-full" src="../../../assets/img/images.png" alt="logo">
+        <a routerLink="/" class="text-2xl font-bold text-indigo-600">TP<span class="text-gray-800"> UTN</span></a>
+      </div>
+
+      <!-- Búsqueda (Desktop) -->
+      <div class="flex-1 max-w-xl mx-4 hidden md:block">
+        <form class="relative">
+          <input type="text" placeholder="Buscar productos..."
+            class="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+          <button type="submit"
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Iconos Derecha -->
+      <div class="flex items-center space-x-4">
+        <button id="search-toggle" class="md:hidden text-gray-600 hover:text-indigo-600" onclick="toggleSearch()">
+          <i class="fas fa-search"></i>
+        </button>
+
+         <div class="flex items-center">
+        <a routerLink="/products" class="mr-6">Productos</a>
+        <div class="relative" (mouseenter)="showCart.set(true)" (mouseleave)="showCart.set(false)">
+            <a routerLink="/checkout">
+                <svg fill="none" height="25" viewBox="0 0 15 15" width="25" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                    d="M0.978822 0.356323L0.0209961 0.643671L3.12789 11H14.9999V4.5C14.9999 3.11929 13.8806 2 12.4999 2H1.47192L0.978822 0.356323Z"
+                    fill="black" />
+                    <path clip-rule="evenodd"
+                    d="M5.5 12C4.67157 12 4 12.6716 4 13.5C4 14.3284 4.67157 15 5.5 15C6.32843 15 7 14.3284 7 13.5C7 12.6716 6.32843 12 5.5 12ZM5 13.5C5 13.2239 5.22386 13 5.5 13C5.77614 13 6 13.2239 6 13.5C6 13.7761 5.77614 14 5.5 14C5.22386 14 5 13.7761 5 13.5Z"
+                    fill="black" fill-rule="evenodd" />
+                    <path clip-rule="evenodd"
+                    d="M12.5 12C11.6716 12 11 12.6716 11 13.5C11 14.3284 11.6716 15 12.5 15C13.3284 15 14 14.3284 14 13.5C14 12.6716 13.3284 12 12.5 12ZM12 13.5C12 13.2239 12.2239 13 12.5 13C12.7761 13 13 13.2239 13 13.5C13 13.7761 12.7761 14 12.5 14C12.2239 14 12 13.7761 12 13.5Z"
+                    fill="black" fill-rule="evenodd" />
+                </svg>
+                <span class="absolute right-0 px-1 text-lg font-bold text-white -top-1">{{ cartStore.productsCount() }}</span></a>
+
+                @if (showCart() && cartStore.productsCount()) {
+                    <div [ngClass]="{'show-cart-animation': showCart()}" class="absolute right-0 z-30 w-48 p-2 mt-2 text-white rounded-sm bg-slate-400">
+                        @for (product of cartStore.products(); track $index) {
+                            <div class="flex items-center justify-between">
+                                    <span>{{ product.qty }} {{ product.title | slice:0:10 }} {{ product.subTotal || product.price | currency}}</span>
+                            </div>
+                        }
+                        <hr class="my-4 border-gray-500 border-t-1" />
+                        <div class="flex justify-between py-3 font-light">
+                            Total:
+                            <span class="not-italic font-bold">{{ cartStore.totalAmount() | currency }}</span>
+                        </div>
+                    </div>
+                }
+        </div>
+         <a routerLink="/auth" class="px-4 text-gray-600 hover:text-indigo-600 relative">
+          <i class="fas fa-user"></i>
+        </a>
+    </div>
+
+        <!-- Botón Menú Móvil -->
+        <button class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Búsqueda Móvil (oculta por defecto) -->
+    <div id="search-bar" class="md:hidden hidden my-2">
+      <form class="relative">
+        <input id="search-input" type="text" placeholder="Buscar productos..."
+          class="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+        <button type="submit"
+          class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Menú de Navegación (Desktop) -->
+  <div class="hidden md:block border-t border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex space-x-8">
+        <a href="#"
+          class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-600">Inicio</a>
+
+        <div class="relative group">
+          <button
+            class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium flex items-center border-b-2 border-transparent group-hover:border-indigo-600">
+            Categorías
+            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+          </button>
+          <div class="absolute left-0 mt-0 w-56 bg-white rounded-md shadow-lg z-50 hidden group-hover:block">
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600">Electrónica</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600">Moda</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600">Hogar</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600">Deportes</a>
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-indigo-600">Juguetes</a>
+          </div>
+        </div>
+
+        <a href="#"
+          class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-600">Ofertas</a>
+        <a href="#"
+          class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-600">Nuevos</a>
+        <a href="#"
+          class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-600">Marcas</a>
+        <a href="#"
+          class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-600">Blog</a>
+        <a href="#"
+          class="py-3 px-1 text-gray-700 hover:text-indigo-600 font-medium border-b-2 border-transparent hover:border-indigo-600">Contacto</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú Móvil (oculto por defecto) -->
+  <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <a href="#"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Inicio</a>
+
+      <div class="relative">
+        <button onclick="this.nextElementSibling.classList.toggle('hidden')"
+          class="w-full flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">
+          Categorías
+          <i class="fas fa-chevron-down text-xs"></i>
+        </button>
+        <div class="hidden pl-4">
+          <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50">Electrónica</a>
+          <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50">Moda</a>
+          <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50">Hogar</a>
+          <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50">Deportes</a>
+          <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50">Juguetes</a>
+        </div>
+      </div>
+
+      <a href="#"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Ofertas</a>
+      <a href="#"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Nuevos</a>
+      <a href="#"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Marcas</a>
+      <a href="#"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Blog</a>
+      <a href="#"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50">Contacto</a>
+    </div>
+  </div>
+</nav>
