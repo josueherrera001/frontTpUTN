@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
+// import { authGuardGuard } from './guards/auth-guard.guard';
 
 export const routes: Routes = [
     {
-        path:'products', 
+        path:'products',
         loadChildren: () => import('./features/products/product.route'),
     },
     {
@@ -10,8 +11,9 @@ export const routes: Routes = [
         loadChildren: () => import('./auth/auth.route')
     },
     {
-        path:'checkout', 
-        loadComponent: () => import('./features/checkout/checkout.component'),
+        path:'checkout',
+        // canActivate: [authGuardGuard],
+        loadComponent: () => import('./features/checkout/checkout.component')
     },
     { path:'',redirectTo: 'products', pathMatch:'full' },
     { path:'**', redirectTo: 'products',pathMatch:'full' }

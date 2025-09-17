@@ -2,6 +2,8 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { CartStore } from 'shared/store/shopping-cart.store';
 import { CheckoutService } from './services/checkout.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'shared/services/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,10 +14,17 @@ import { CheckoutService } from './services/checkout.service';
 })
 export default class CheckoutComponent {
   cartStore = inject(CartStore);
+//  private readonly  router = inject(Router);
+  // private readonly authService = inject(AuthService);
 
   private readonly _checkoutSvc = inject(CheckoutService);
-
+constructor(private readonly auth:AuthService) {}
   onProceedToPay(): void {
+    debugger
+  //    if (!this.auth.isAuthenticated()) {
+  //     this.router.navigate(['/auth']);
+  //     return;
+  // }
     this._checkoutSvc.onProceedToPay(this.cartStore.products());
   }
 

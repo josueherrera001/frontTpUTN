@@ -3,24 +3,24 @@
     <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
         <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
             <h1 class="mb-8 text-3xl text-center">Sign up</h1>
-            <input 
+            <input
                 type="text"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="fullname"
                 placeholder="Full Name" />
 
-            <input 
+            <input
                 type="text"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="email"
                 placeholder="Email" />
 
-            <input 
+            <input
                 type="password"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="password"
                 placeholder="Password" />
-            <input 
+            <input
                 type="password"
                 class="block border border-grey-light w-full p-3 rounded mb-4"
                 name="confirm_password"
@@ -32,10 +32,10 @@
             >Create Account</button>
 
             <div class="text-center text-sm text-grey-dark mt-4">
-                By signing up, you agree to the 
+                By signing up, you agree to the
                 <a class="no-underline border-b border-grey-dark text-grey-dark" href="#">
                     Terms of Service
-                </a> and 
+                </a> and
                 <a class="no-underline border-b border-grey-dark text-grey-dark" href="#">
                     Privacy Policy
                 </a>
@@ -43,7 +43,7 @@
         </div>
 
         <div class="text-grey-dark mt-6">
-            Already have an account? 
+            Already have an account?
             <a class="no-underline border-b border-blue text-blue" href="../login/">
                 Log in
             </a>.
@@ -53,78 +53,75 @@
 <!-- component -->
 <div class="h-screen p-6 bg-gray-100 flex items-center justify-center" style="height: 93vh;">
     <div class="container max-w-screen-lg mx-auto">
-      <div>  
+      <div>
         <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
-          <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+          <form action="" [formGroup]="registerForm"  class="form" (ngSubmit)="onSubmit()">
+            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
             <div class="text-gray-600">
               <p class="font-medium text-lg">Datos personal</p>
-              <p>Por favor complete todos los campos.</p>
+              <p>Por favor complete todos los campos. para que puda crear el usuario,
+                asi podra realizar compras y recibir notificaciones.</p>
+              <p class="text-red-500">Los campos con * son obligatorios.</p>
             </div>
-  
+
             <div class="lg:col-span-2">
               <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                 <div class="md:col-span-5">
-                  <label for="full_name">Apellido</label>
-                  <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                  <label class="flex" for="FirstName">Apellido <p class="text-red-500">*</p></label>
+                  <input type="text" name="FirstName" id="FirstName"  formControlName="FirstName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
                 </div>
                 <div class="md:col-span-5">
-                    <label for="full_name">Nombre</label>
-                    <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                    <label class="flex"  for="LastName">Nombre <p class="text-red-500">*</p></label>
+                    <input type="text" name="LastName" id="LastName" formControlName="LastName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
                 </div>
                 <div class="md:col-span-5">
-                  <label for="email">Correo electronico</label>
-                  <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
+                  <label class="flex"  for="Email">Correo electronico <p class="text-red-500">*</p></label>
+                  <input type="email" name="Email" id="Email" formControlName="Email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
                 </div>
                 <div class="md:col-span-5">
-                  <label for="email">Telefono</label>
-                  <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
+                  <label class="flex"  for="Phone">Telefono <p class="text-red-500">*</p></label>
+                  <input type="tel" name="Phone" id="Phone" formControlName="Phone" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
                 </div>
-  
-                <div class="md:col-span-3">
-                  <label for="address">Calle</label>
-                  <input type="text" name="address" id="address" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-                </div>
-  
+
                 <div class="md:col-span-2">
-                  <label for="city">Ciudad</label>
-                  <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                  <label  class="flex"  for="Street">Calle <p class="text-red-500">*</p></label>
+                  <input type="text" name="Street" id="Street" formControlName="Street" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="Calle" />
                 </div>
-  
-                <div class="md:col-span-2">
-                  <label for="country">Pais</label>
-                  <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                    <input name="country" id="country" placeholder="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                    <button tabindex="-1" class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                      <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
-                    <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600">
-                      <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                    </button>
-                  </div>
-                </div>
-  
-                <div class="md:col-span-2">
-                  <label for="state">Provincia</label>
-                  <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                    <input name="state" id="state" placeholder="State" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                    <button tabindex="-1" class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                      <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
-                    <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600">
-                      <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                    </button>
-                  </div>
-                </div>
-  
+
                 <div class="md:col-span-1">
-                  <label for="zipcode">Código postal</label>
-                  <input type="text" name="zipcode" id="zipcode" class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="" value="" />
+                  <label  class="flex"  for="StreetNumber">Nro. <p class="text-red-500">*</p></label>
+                  <input type="text" name="StreetNumber" id="StreetNumber" formControlName="StreetNumber" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="Numero" />
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="flex"  for="Country">Ciudad <p class="text-red-500">*</p></label>
+                  <input type="text" name="Country" id="Country" formControlName="Country" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="flex"  for="Province">Provincia <p class="text-red-500">*</p></label>
+                  <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                    <input name="Province" id="Province" formControlName="Province" placeholder="Provincia" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                  </div>
+                </div>
+
+                <div class="md:col-span-3 mb-2">
+                  <label class="flex"  for="Country">Pais <p class="text-red-500">*</p></label>
+                  <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
+                    <input name="Country" id="Country" placeholder="pais" formControlName="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
+                  </div>
+                </div>
+
+
+              </div>
+              <p class="font-medium text-justify mb-2">Datos de login</p>
+                <div class="md:col-span-6">
+                  <label class="flex" for="UserName">Usuario <p class="text-red-500">*</p></label>
+                  <input type="text" name="UserName" id="UserName" formControlName="UserName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                </div>
+                <div class="md:col-span-6 mb-2">
+                    <label class="flex"  for="UserPass">Contraseña <p class="text-red-500">*</p></label>
+                    <input type="text" name="UserPass" id="UserPass" formControlName="UserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
                 </div>
 
                 <div class="md:col-span-5 text-right">
@@ -132,10 +129,10 @@
                     <button class="bg-primary-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Registrar</button>
                   </div>
                 </div>
-  
-              </div>
             </div>
+
           </div>
+          </form>
         </div>
       </div>
     </div>

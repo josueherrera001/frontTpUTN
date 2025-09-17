@@ -1,6 +1,8 @@
 import { CurrencyPipe, NgClass, SlicePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Menu } from 'shared/models/menu';
+import { MenuService } from 'shared/services/menu.service';
 import { CartStore } from 'shared/store/shopping-cart.store';
 
 @Component({
@@ -13,5 +15,8 @@ import { CartStore } from 'shared/store/shopping-cart.store';
 export class HeaderComponent {
 
   showCart = signal<boolean>(false);
-  cartStore = inject(CartStore);  
+  cartStore = inject(CartStore);
+
+  private readonly menus = inject( MenuService);
+  public menus$ = this.menus.menus;
 }

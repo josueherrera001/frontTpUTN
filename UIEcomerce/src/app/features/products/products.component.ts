@@ -25,7 +25,7 @@ export default class ProductsComponent {
   private readonly productSvc = inject( ProductsService);
   products = this.productSvc.products;
   cartStore = inject(CartStore);
-  
+
   onAddToCart(product:Product):void{
       this.cartStore.addToCart(product);
   }
