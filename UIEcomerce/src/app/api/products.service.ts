@@ -57,5 +57,6 @@ export class ProductsService{
         this.products.update(products => products.filter(p => p.id !== id));
       })
     );
+    
   }
 }
