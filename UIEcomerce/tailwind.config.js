@@ -1,10 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [ "./src/**/*.{html,ts}",],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+  content: [ "./src/**/*.{html,ts,scss}"],
   darkMode: 'class',
   theme: {
     extend: {
@@ -48,6 +44,7 @@ module.exports = {
     'Noto Color Emoji'
   ]
     }
-  }
+  },
+    plugins: [],
 }
 

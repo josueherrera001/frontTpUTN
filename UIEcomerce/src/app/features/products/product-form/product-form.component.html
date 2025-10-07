@@ -1,0 +1,66 @@
+<div class="h-screen p-6 bg-gray-100 flex items-center justify-center" style="height: 93vh;">  
+  <div class="container max-w-screen-lg mx-auto">  
+    <div>    
+      <div class="bg-white rounded shadow-lg p-6 md:p-8 mb-6">  
+        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">  
+          <div class="text-gray-600">  
+            <p class="font-medium text-lg">Registrar Producto</p>  
+            <p>Por favor completa todos los campos obligatorios.</p>  
+          </div>  
+
+          <div class="lg:col-span-2">  
+            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">  
+
+              <!-- Título -->
+              <div class="md:col-span-5">  
+                <label for="title">Título del Producto</label>  
+                <input type="text" id="title" [(ngModel)]="product.title" name="title"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />  
+              </div>  
+
+              <!-- Precio -->
+              <div class="md:col-span-2">  
+                <label for="price">Precio</label>  
+                <input type="number" id="price" [(ngModel)]="product.price" name="price" step="0.01"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />  
+              </div>  
+
+              <!-- Categoría -->
+              <div class="md:col-span-3">  
+                <label for="category">Categoría</label>  
+                <input type="text" id="category" [(ngModel)]="product.category" name="category"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />  
+              </div>  
+
+              <!-- Descripción -->
+              <div class="md:col-span-5">  
+                <label for="description">Descripción</label>  
+                <textarea id="description" [(ngModel)]="product.description" name="description" rows="3"
+                  class="border mt-1 rounded px-4 w-full bg-gray-50"></textarea>  
+              </div>  
+
+              <!-- Imagen -->
+              <div class="md:col-span-5">  
+                <label for="image">URL de Imagen</label>  
+                <input type="text" id="image" [(ngModel)]="product.image" name="image"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                  placeholder="https://..." />  
+              </div>  
+
+              <!-- Botones -->
+              <div class="md:col-span-5 text-right">  
+                <button type="button" (click)="resetForm()"
+                  class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mr-2">Cancelar</button>
+                <button type="button" (click)="submit()"
+                  class="bg-primary-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Registrar Producto
+                </button>  
+              </div>  
+
+            </div>  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+</div>
