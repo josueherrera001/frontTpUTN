@@ -7,4 +7,5 @@ export interface Contact {
     completedAt?: Date;  
     CreatedDate?: Date;  
     State?: number;  
+
 }
