@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
     provideToastr({
-      timeOut:900,
+      timeOut:1200,
       preventDuplicates:true
     }),
     provideRouter(routes, withComponentInputBinding()),

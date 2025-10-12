@@ -1,164 +1,190 @@
 <!-- Tabla -->
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-    <div class="overflow-x-auto">
+<!-- Encabezado -->
+<!-- <div class="bg-indigo-600 rounded-lg  p-6 text-white justify-items-center">
+  <div class="flex items-center">
+    <i class="fas fa-list text-2xl mr-3"></i>
+    <h1 class="text-2xl font-bold">Lista de Categorías</h1>
+  </div>
+   <div class="bg-white/20 p-2 rounded-full">
+      <i class="fas fa-plus text-white"></i>
+  </div>
+</div>
+<div class="flex justify-end">
+  <button type="button" (click)="addCategory()" data-modal-target="popup-modal-category"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold   px-4 rounded mt-3 mb-2 py-2">Agregar
+    categoria</button>
+</div> -->
 
-       <!-- Encabezado -->
-        <div class="bg-indigo-600 p-6 text-white justify-items-center">
-            <div class="flex items-center">
-                <i class="fas fa-list text-2xl mr-3"></i>
-                <h1 class="text-2xl font-bold">Lista de Categorías</h1>
+<!-- Encabezado con gradiente -->
+        <div class="bg-gradient-to-r rounded-lg from-indigo-600 to-purple-600 p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-tags text-2xl mr-3"></i>
+                    <h1 class="text-2xl font-bold">Lista de Categorías</h1>
+                </div>
+                <div class="bg-white/20 p-2 rounded-full" (click)="showModalCreateCategory('','Agregar')" data-modal-target="popup-modal-category">
+                    <i class="fas fa-plus text-white"></i>
+                </div>
             </div>
-            <!-- <p class="mt-2 text-indigo-100">Complete el formulario para crear una nueva categoría</p> -->
+            <p class="mt-2 text-center  font-bold text-indigo-100">En esta pantalla se va a poder ver todas las categoria diosponible y manipularlas.(Modificar, eliminar y agregar sub categoria)</p>
         </div>
 
-      <table class="min-w-full divide-y divide-gray-200">
-        <!-- Encabezado -->
-        <thead class="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-              <div class="flex items-center space-x-1">
-                <span>Categoría</span>
-              </div>
-            </th>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <!-- Encabezado -->
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+            <div class="flex items-center space-x-1">
+              <span>Categoría</span>
+            </div>
+          </th>
 
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-              <div class="flex items-center space-x-1">
-                <span>Descripción</span>
-              </div>
-            </th>
-            <th
-              scope="col"
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-            >
-              <div class="flex items-center space-x-1">
-                <span>Fecha Creación</span>
-              </div>
-            </th>
-             <th
-              scope="col"
-              class="px-6 py-3 justify-items-center text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-            >
-              <div class="flex items-center space-x-1">
-                <span>Acciones</span>
-              </div>
-            </th>
-          </tr>
-        </thead>
+          <th scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+            <div class="flex items-center space-x-1">
+              <span>Descripción</span>
+            </div>
+          </th>
+          <th scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+            <div class="flex items-center space-x-1">
+              <span>Fecha Creación</span>
+            </div>
+          </th>
+          <th scope="col"
+            class="px-6 py-3 justify-items-center text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+            <div class="flex items-center space-x-1">
+              <span>Acciones</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
 
-        <!-- Cuerpo -->
-        <tbody class="bg-white divide-y divide-gray-200">
-          @for (category of categories(); track category.Id) {
-            <tr class="hover:bg-gray-50 transition-colors">
-              <!-- Nombre -->
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                      {{ category.Name }}
-                    </div>
-                  </div>
+      <!-- Cuerpo -->
+      <tbody class="bg-white divide-y divide-gray-200">
+        @for (category of categories(); track category.Id) {
+        <tr class="hover:bg-gray-50 transition-colors">
+          <!-- Nombre -->
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="ml-4">
+                <div class="text-sm font-medium text-gray-900">
+                  {{ category.Name }}
                 </div>
-              </td>
+              </div>
+            </div>
+          </td>
 
-              <!-- Descripción -->
-              <!-- <td class="px-6 py-4">
+          <!-- Descripción -->
+          <!-- <td class="px-6 py-4">
                 <div class="text-sm text-gray-900 max-w-xs truncate">
                   {{ category.Description }}
                 </div>
               </td> -->
-              <td class="px-6 py-4">
-                <div class="flex items-center">
-                    <div class="text-sm font-medium text-gray-900">
-                      {{ category.Description }}
-                    </div>
-                  </div>
-              </td>
-              <!-- Fecha -->
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ category.CreatedDate | date:'dd/MM/yyyy' }}
-              </td>
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <div class="text-sm font-medium text-gray-900">
+                {{ category.Description }}
+              </div>
+            </div>
+          </td>
+          <!-- Fecha -->
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ category.CreatedDate | date:'dd/MM/yyyy' }}
+          </td>
 
-              <!-- Acciones -->
-              <td class="px-6 py-4 text-right text-sm font-medium">
-                <div class="flex justify-center space-x-2">
-                  <!-- <button
+          <!-- Acciones -->
+          <td class="px-6 py-4 text-right text-sm font-medium">
+            <div class="flex justify-center space-x-2">
+
+              <button class="text-blue-600 hover:text-blue-900 transition-colors" data-title="Agregar subcategoria"
+                data-modal-target="popup-modal-category" (click)="showModalCreateCategory(category.Id,'Subcategoría')">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+              <button
                     class="text-blue-600 hover:text-blue-900 transition-colors"
-                    title="Editar"  data-modal-target="popup-modal-category" (click)="showModalCreateCategory()"
+                    data-title="Editar"  data-modal-target="popup-modal-category" (click)="showModalCreateCategory(category.Id,'Editar')"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                  </button> -->
-                  <button
-                    class="text-blue-600 hover:text-blue-900 transition-colors"
-                    title="Agregar subcategoria" data-modal-target="popup-modal-category" (click)="showModalCreateCategory()"
-                  >
-                    <i class="fa fa-plus" aria-hidden="true"></i>
                   </button>
-                  <button
-                    class="text-green-600 hover:text-green-900 transition-colors"
-                    title="Ver detalles"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                  </button>
-                  <button
-                    (click)="deleteCategory(category.Id)"
-                    class="text-red-600 hover:text-red-900 transition-colors"
-                    title="Eliminar"
-                  >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+              <!-- <button class="text-green-600 hover:text-green-900 transition-colors" data-title="Actualizar">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button> -->
+              <button (click)="showAlert(category.Id)" class="text-red-600 hover:text-red-900 transition-colors"
+                data-title="Eliminar">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 
   <div id="popup-modal-category" tabindex="-1"
-  class="bg-black bg-opacity-50 w-screen h-screen hidden overflow-y-auto  overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center  md:inset-0  max-h-full">
-  <div class="relative p-4 w-full max-h-full items-center justify-center flex">
-    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 lg:w-[94rem] md:w-3/4 sm:w-full">
+    class="bg-black bg-opacity-50 w-screen h-screen hidden overflow-y-auto  overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center  md:inset-0  max-h-full">
+    <div class="relative p-4 w-full max-h-full items-center justify-center flex">
+      <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 lg:w-[43rem] md:w-3/4 sm:w-full">
 
-      <div class="p-4 md:p-5 text-center">
-        <hr>
-        <form action="" class="flex flex-col justify-between h-full" id="slice">
+        <div class="p-4 md:p-5 text-center">
+          <hr>
+          <form action="" class="flex flex-col justify-between h-full" [formGroup]="frmForm" class="form"
+            (ngSubmit)="onSubmit()">
 
-          <div class="bg-indigo-600 p-6 text-white justify-items-center">
-            <div class="flex items-center">
+            <div class="bg-indigo-600 p-6 text-white justify-items-center">
+              <div class="flex items-center">
                 <i class="fas fa-list text-2xl mr-3"></i>
                 <h1 class="text-2xl font-bold">{{ msgheader }}</h1>
+              </div>
+              <p class="mt-2 text-indigo-100">{{ msgbody }}</p>
             </div>
-            <p class="mt-2 text-indigo-100">{{ msgbody }}</p>
+            <input type="text" name="Id" hidden readonly id="Id">
+
+            <div class="form-section mb-1">
+            </div>
+            <div class="md:col-span-5">
+              <label class="flex" for="Name">Nombre <p class="text-red-500">*</p></label>
+              <input type="text" name="Name" id="Name" formControlName="Name"
+                class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="Nombre de la categoria" />
+              <div *ngIf="frmForm.get('Name')?.touched && frmForm.get('Name')?.invalid"
+                class="text-lg text-red-700 p-2 mt-1">
+                <div *ngIf="frmForm.get('Name')?.errors?.['required']">Nombre requerido</div>
+              </div>
+            </div>
+
+            <div class="md:col-span-5">
+              <label class="flex" for="Description">Descripcion</label>
+              <textarea type="text" name="Description" id="Name" formControlName="Description"
+                class="resize-none border mt-1 rounded px-4 w-full h-52 bg-gray-50" value="" placeholder="Ingresa la descripcion" >
+              </textarea>
+            </div>
+            <div
+              class="justify-end p-4 border-t border-gray-200 rounded-b-lg flex items-center space-x-2 dark:border-gray-600">
+              <button (click)="hideModalcategory()" data-modal-hide="popup-modal-category" type="button"
+                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                cancel
+              </button>
+              <button data-modal-hide="popup-modal-category" type="submit"
+                class="text-white bg-purple-600 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                Aceptar
+              </button>
+            </div>
+          </form>
         </div>
-          <input type="text" name="Id" hidden readonly id="Id">
-
-          <div class="form-section mb-1">
-          </div>
-
-          <div
-            class="justify-end p-4 border-t border-gray-200 rounded-b-lg flex items-center space-x-2 dark:border-gray-600">
-            <button (click)="hideModalcategory()" data-modal-hide="popup-modal-category" type="button"
-              class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-              cancel
-            </button>
-            <button data-modal-hide="popup-modal-category" type="button"
-              class="text-white bg-purple-600 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-              Aceptar
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
-</div>

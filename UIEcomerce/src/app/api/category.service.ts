@@ -27,13 +27,11 @@ export class CategoriesService {
 
     // GET CATEGORY BY ID
     public getCategoryById(id: string) {
-        return runInInjectionContext(this._injector, () =>
-            toSignal<Category>(this._http.get<Category>(`${this._endpoint}categories/${id}`))
-        );
+        return (this._http.get<Category>(`${this._endpoint}categories/${id}`));
     }
 
     // POST: create CATEGORY
-    public createCategory(category: Omit<Category, "id">) {
+    public createCategory(category: Category) {
         return this._http.post<Category>(`${this._endpoint}categories`, category).pipe(
             tap((newCategory) => {
                 this.categories.update(categories => [...categories, newCategory]);
@@ -42,13 +40,9 @@ export class CategoriesService {
     }
 
     // PUT: update CATEGORY
-    public updateCategory(id: string, category: Partial<Category>) {
+    public updateCategory(id: string, category: Category) {
         return this._http.put<Category>(`${this._endpoint}categories/${id}`, category).pipe(
-            tap((updated) => {
-                this.categories.update(categories =>
-                    categories.map(c => c.Id === id ? updated : c)
-                );
-            })
+            tap((updated) => updated)
         );
     }
 
