@@ -158,14 +158,14 @@
                 </div>
                 <div class="md:col-span-6 mb-2">
                     <label class="flex"  for="UserPass">Contraseña <p class="text-red-500">*</p></label>
-                    <input type="text" name="UserPass" id="UserPass" formControlName="UserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                    <input type="password" name="UserPass" id="UserPass" formControlName="UserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
                       <div *ngIf="registerForm.get('UserPass')?.touched && registerForm.get('UserPass')?.invalid" class="text-lg text-red-700 p-2 mt-1">
                           <div *ngIf="registerForm.get('UserPass')?.errors?.['required']">Contraseña requerida.</div>
                       </div>
                   </div>
                 <div class="md:col-span-6 mb-2">
                     <label class="flex"  for="ConfUserPass">Confirmar contraseña <p class="text-red-500">*</p></label>
-                    <input type="text" name="ConfUserPass" id="ConfUserPass" formControlName="ConfUserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                    <input type="password" name="ConfUserPass" id="ConfUserPass" formControlName="ConfUserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
                       <div *ngIf="registerForm.get('ConfUserPass')?.touched && registerForm.get('ConfUserPass')?.invalid" class="text-lg text-red-700 p-2 mt-1">
                           <div *ngIf="registerForm.get('ConfUserPass')?.errors?.['required']">Confirmar contraseña requerida.</div>
                       </div>
