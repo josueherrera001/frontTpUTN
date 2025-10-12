@@ -20,7 +20,6 @@ export class AuthService {
   ) { }
 
   public isAuthenticated(): boolean {
-    debugger;
      try {
        let exp =this.jwtHelper.isTokenExpired(this.auth.getJwtToken());
       this.auth.refreshToken();
@@ -31,10 +30,15 @@ export class AuthService {
       else{
         this.statetoke = exp;
       }
-      debugger;
       return !this.statetoke;
      } catch (error) {
       return false;
      }
-    }
+  }
+
+  hasAnyRole(roles: string[]): boolean {
+    const userRoles = JSON.parse(localStorage.getItem('ROLE') || '[]') as Array<string>;
+    const hasRole = userRoles.some(role => roles.includes(role));
+    return hasRole;
+  }
 }

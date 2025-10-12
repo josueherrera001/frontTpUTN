@@ -20,7 +20,6 @@ export default class CheckoutComponent {
   private readonly _checkoutSvc = inject(CheckoutService);
 constructor(private readonly auth:AuthService) {}
   onProceedToPay(): void {
-    debugger
   //    if (!this.auth.isAuthenticated()) {
   //     this.router.navigate(['/auth']);
   //     return;

@@ -51,65 +51,99 @@
     </div>
 </div> -->
 <!-- component -->
-<div class="h-screen p-6 bg-gray-100 flex items-center justify-center" style="height: 93vh;">
+<div class="h-full p-6 bg-gray-100 flex items-center justify-center">
     <div class="container max-w-screen-lg mx-auto">
       <div>
         <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
           <form action="" [formGroup]="registerForm"  class="form" (ngSubmit)="onSubmit()">
-            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
-            <div class="text-gray-600">
-              <p class="font-medium text-lg">Datos personal</p>
-              <p>Por favor complete todos los campos. para que puda crear el usuario,
-                asi podra realizar compras y recibir notificaciones.</p>
-              <p class="text-red-500">Los campos con * son obligatorios.</p>
-            </div>
+            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3 max-md:grid-cols-1 max-sm:grid-cols-1">
+              <div class="text-gray-600">
+                <p class="font-medium text-lg">Datos personal</p>
+                <p>Por favor complete todos los campos. para que puda crear el usuario,
+                  asi podra realizar compras y recibir notificaciones.</p>
+                <p class="text-red-500">Los campos con * son obligatorios.</p>
+              </div>
 
             <div class="lg:col-span-2">
               <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                 <div class="md:col-span-5">
                   <label class="flex" for="FirstName">Apellido <p class="text-red-500">*</p></label>
                   <input type="text" name="FirstName" id="FirstName"  formControlName="FirstName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                   <div *ngIf="registerForm.get('FirstName')?.touched && registerForm.get('FirstName')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                      Apellido requerido.
+                    </div>
                 </div>
                 <div class="md:col-span-5">
                     <label class="flex"  for="LastName">Nombre <p class="text-red-500">*</p></label>
                     <input type="text" name="LastName" id="LastName" formControlName="LastName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                     <div *ngIf="registerForm.get('LastName')?.touched && registerForm.get('LastName')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                      Nombre requerido.
+                    </div>
                 </div>
                 <div class="md:col-span-5">
                   <label class="flex"  for="Email">Correo electronico <p class="text-red-500">*</p></label>
                   <input type="email" name="Email" id="Email" formControlName="Email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
+                     <div *ngIf="registerForm.get('Email')?.touched && registerForm.get('Email')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('Email')?.errors?.['required']">Correo electronico requerido.</div>
+                        <div *ngIf="registerForm.get('Email')?.errors?.['pattern']">Correo electronico invalido.</div>
+                    </div>
                 </div>
                 <div class="md:col-span-5">
                   <label class="flex"  for="Phone">Telefono <p class="text-red-500">*</p></label>
-                  <input type="tel" name="Phone" id="Phone" formControlName="Phone" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
+                  <input type="tel" name="Phone" id="Phone" formControlName="Phone" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="(+549)xxx xxx xxxx or (+54)xxx xxx xxxx" />
+                     <div *ngIf="registerForm.get('Phone')?.touched && registerForm.get('Phone')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('Phone')?.errors?.['required']">Telefono requerido.</div>
+                        <div *ngIf="registerForm.get('Phone')?.errors?.['pattern']">Telefono invalido, formato((+549)xxx xxx xxxx or (+54)xxx xxx xxxx).</div>
+                    </div>
                 </div>
 
                 <div class="md:col-span-2">
                   <label  class="flex"  for="Street">Calle <p class="text-red-500">*</p></label>
                   <input type="text" name="Street" id="Street" formControlName="Street" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="Calle" />
+                   <div *ngIf="registerForm.get('Street')?.touched && registerForm.get('Street')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('Street')?.errors?.['required']">Calle requerida.</div>
+                    </div>
                 </div>
 
                 <div class="md:col-span-1">
                   <label  class="flex"  for="StreetNumber">Nro. <p class="text-red-500">*</p></label>
                   <input type="text" name="StreetNumber" id="StreetNumber" formControlName="StreetNumber" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="Numero" />
+                   <div *ngIf="registerForm.get('StreetNumber')?.touched && registerForm.get('StreetNumber')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('StreetNumber')?.errors?.['required']">El Nro. requerida.</div>
+                    </div>
                 </div>
 
                 <div class="md:col-span-2">
-                  <label class="flex"  for="Country">Ciudad <p class="text-red-500">*</p></label>
-                  <input type="text" name="Country" id="Country" formControlName="Country" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                  <label class="flex"  for="Location">Ciudad <p class="text-red-500">*</p></label>
+                  <input type="text" name="Location" id="Location" formControlName="Location" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                    <div *ngIf="registerForm.get('Location')?.touched && registerForm.get('Location')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('Location')?.errors?.['required']">Ciudad requerida.</div>
+                    </div>
+                </div>
+
+
+                <div class="md:col-span-5">
+                  <label class="flex"  for="BetweenStreet">Interseccion <p class="text-red-500">*</p></label>
+                  <input type="text" name="BetweenStreet" id="BetweenStreet" formControlName="BetweenStreet" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="Entre que calle y que calle" />
+                     <div *ngIf="registerForm.get('BetweenStreet')?.touched && registerForm.get('BetweenStreet')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('BetweenStreet')?.errors?.['required']">Intersection requerido.</div>
+                    </div>
                 </div>
 
                 <div class="md:col-span-2">
                   <label class="flex"  for="Province">Provincia <p class="text-red-500">*</p></label>
-                  <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                    <input name="Province" id="Province" formControlName="Province" placeholder="Provincia" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                  </div>
+                    <input type="text" name="Province" id="Province" formControlName="Province" placeholder="Provincia" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                     <div *ngIf="registerForm.get('Province')?.touched && registerForm.get('Province')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('Province')?.errors?.['required']">Provincia requerida.</div>
+                    </div>
                 </div>
 
                 <div class="md:col-span-3 mb-2">
                   <label class="flex"  for="Country">Pais <p class="text-red-500">*</p></label>
-                  <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                    <input name="Country" id="Country" placeholder="pais" formControlName="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                  </div>
+                    <input name="Country" id="Country" placeholder="pais" formControlName="Country" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                      <div *ngIf="registerForm.get('Country')?.touched && registerForm.get('Country')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                          <div *ngIf="registerForm.get('Country')?.errors?.['required']">Pais requerido.</div>
+                      </div>
                 </div>
 
 
@@ -118,15 +152,28 @@
                 <div class="md:col-span-6">
                   <label class="flex" for="UserName">Usuario <p class="text-red-500">*</p></label>
                   <input type="text" name="UserName" id="UserName" formControlName="UserName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                    <div *ngIf="registerForm.get('UserName')?.touched && registerForm.get('UserName')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                        <div *ngIf="registerForm.get('UserName')?.errors?.['required']">Usuario requerido.</div>
+                    </div>
                 </div>
                 <div class="md:col-span-6 mb-2">
                     <label class="flex"  for="UserPass">Contraseña <p class="text-red-500">*</p></label>
                     <input type="text" name="UserPass" id="UserPass" formControlName="UserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
-                </div>
+                      <div *ngIf="registerForm.get('UserPass')?.touched && registerForm.get('UserPass')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                          <div *ngIf="registerForm.get('UserPass')?.errors?.['required']">Contraseña requerida.</div>
+                      </div>
+                  </div>
+                <div class="md:col-span-6 mb-2">
+                    <label class="flex"  for="ConfUserPass">Confirmar contraseña <p class="text-red-500">*</p></label>
+                    <input type="text" name="ConfUserPass" id="ConfUserPass" formControlName="ConfUserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                      <div *ngIf="registerForm.get('ConfUserPass')?.touched && registerForm.get('ConfUserPass')?.invalid" class="text-lg text-red-700 p-2 mt-1">
+                          <div *ngIf="registerForm.get('ConfUserPass')?.errors?.['required']">Confirmar contraseña requerida.</div>
+                      </div>
+                  </div>
 
                 <div class="md:col-span-5 text-right">
                   <div class="inline-flex items-end">
-                    <button class="bg-primary-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Registrar</button>
+                    <button type="submit" class="bg-primary-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Registrar</button>
                   </div>
                 </div>
             </div>

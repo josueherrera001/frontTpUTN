@@ -2,12 +2,13 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from
 import { catchError, throwError } from "rxjs";
 
 export const ErrorResponseInterceptor:HttpInterceptorFn = (
-    req: HttpRequest<unknown>, 
+    req: HttpRequest<unknown>,
     next: HttpHandlerFn
-) => 
+) =>
     next(req).pipe(catchError(handlerErrorResponse));
 
 function handlerErrorResponse(error: HttpErrorResponse):ReturnType<typeof throwError>{
     const errorResponse = `Error code:${error.status}, message:${error.message}`;
+      debugger;
     return throwError( () => errorResponse);
 }

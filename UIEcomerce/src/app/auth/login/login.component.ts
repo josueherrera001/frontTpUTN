@@ -30,10 +30,12 @@ export default class LoginComponent {
   }
   Submit(){
     if( this.authForm.valid){
+      debugger;
       this.taskService.Authentication(this.authForm.value).subscribe(
         (data:any) =>{
+      debugger;
           if(data){
-              this.router.navigate(['/principal']);
+            this.router.navigate(['/products']);
           }
           else{
             alert('Usuario y/o contraseña incorrecto')

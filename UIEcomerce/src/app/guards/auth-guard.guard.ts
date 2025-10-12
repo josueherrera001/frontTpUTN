@@ -3,10 +3,8 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'shared/services/auth.service';
 
 export const authGuardGuard: CanActivateFn = (route, state) => {
-    debugger;
    const authService = inject(AuthService);
   const router = inject(Router);
-  debugger;
 
   if (authService.isAuthenticated()) {
     return true;

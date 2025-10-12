@@ -1,11 +1,10 @@
-
-export interface Address {
-    Id?: string;
-    UserId: string;
-    Country: string;
-    Province: string;
-    Location: string;
+export interface Address{
+    Id:string;
+    UserId:string;
     Street: string;
-    Number: string;
-    Between: string;
+    StreetNumber: string;
+    BetweenStreet: string;
+    Country: string;
+    Location: string;
+    Province: string;
 }

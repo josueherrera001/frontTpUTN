@@ -5,4 +5,14 @@
 
 .bg-primary-600 {
     background-color: rgb(159 161 204)!important;
-} 
+}
+
+.showmodal {
+    display: flex !important;
+    opacity: 100 !important;
+}
+
+.hiddenmodal {
+    display: none !important;
+    opacity: 0 !important;
+}

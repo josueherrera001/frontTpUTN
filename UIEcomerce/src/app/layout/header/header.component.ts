@@ -1,6 +1,6 @@
 import { CurrencyPipe, NgClass, SlicePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { Menu } from 'shared/models/menu';
 import { MenuService } from 'shared/services/menu.service';
 import { CartStore } from 'shared/store/shopping-cart.store';
@@ -8,7 +8,7 @@ import { CartStore } from 'shared/store/shopping-cart.store';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, NgClass, CurrencyPipe, SlicePipe],
+  imports: [RouterLink, NgClass, CurrencyPipe, SlicePipe, RouterOutlet],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

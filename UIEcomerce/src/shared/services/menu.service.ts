@@ -18,7 +18,6 @@ export class MenuService {
    }
 
   public getMenus(): void {
-    debugger;
     this._http
       .get<Menu[]>(`${this._endpoint}`)
       .pipe(
@@ -26,7 +25,6 @@ export class MenuService {
           menus.map((menu: Menu) => ({ ...menu }))
         ),
         tap((Menus: Menu[]) => {
-          debugger;
           this.menus.set(Menus);
         })
       )

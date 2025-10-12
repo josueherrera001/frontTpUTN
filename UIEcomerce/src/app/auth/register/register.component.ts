@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from 'shared/models/user';
+import { RegisterService } from 'shared/services/register.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +16,11 @@ import { User } from 'shared/models/user';
 export default class RegisterComponent {
   registerForm!: FormGroup;
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(
+    private readonly registerService: RegisterService,
+    private readonly fb: FormBuilder,
+    private readonly router: Router
+  ) {
     this.createForm();
   }
   private createForm():void{
@@ -21,7 +28,7 @@ export default class RegisterComponent {
         FirstName: ['',[Validators.required]],
         LastName: ['',[Validators.required]],
         Email: ['',[Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-        Phone: ['',[Validators.required]],
+        Phone: ['',[Validators.required, Validators.pattern(/^\+54(?:9)?\d{1,5}\d{7,8}$/)]],
         Country: ['',[Validators.required]],
         Province: ['',[Validators.required]],
         Street: ['',[Validators.required]],
@@ -29,38 +36,53 @@ export default class RegisterComponent {
         StreetNumber: ['',[Validators.required]],
         BetweenStreet: ['',[Validators.required]],
         UserName: ['',[Validators.required]],
-        UserPass: ['',[Validators.required]]
+        UserPass: ['',[Validators.required]],
+        ConfUserPass: ['',[Validators.required]]
       });
     }
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const formData = this.registerForm.value;
-      const user: User = {
-        Address:{
+      try {
+        const formData = this.registerForm.value;
+        const user: User = {
+          address:{
             UserId: '', // This should be set to the actual user ID after registration
             Country: formData.Country,
             Province: formData.Province,
-            Between: formData.BetweenStreet,
+            BetweenStreet: formData.BetweenStreet,
             Location: formData.Location,
             Street: formData.Street,
-            Number: formData.StreetNumber,
+            StreetNumber: formData.StreetNumber,
+            Id: ''
           },
-          auth:{            
-            UserName: formData.UserName,
-            UserPass: formData.UserPass,
-            RoleId: '', // Default role, can be changed later
-            EmailValidated: false,
+            auth:{
+              UserName: formData.UserName,
+              UserPass: formData.UserPass,
+              RoleId: '', // Default role, can be changed later
+              EmailValidated: false,
+            },
+            Email: formData.Email,
+            FirstName: formData.FirstName,
+            LastName: formData.LastName,
+            Phone: formData.Phone,
+          };
+
+        // Here you can add the logic to send the data to the server
+        this.registerService.post(user).subscribe(
+          (response) => {
+            this.router.navigate(['/products']);
           },
-          Email: formData.Email,
-          FirstName: formData.FirstName,
-          LastName: formData.LastName,
-          PhoneNumber: formData.Phone,
-        };
-      
-      // Aquí puedes agregar la lógica para enviar los datos al servidor
+          (error:HttpErrorResponse) => {
+            console.error('Registration error', error );
+          }
+        );
+      } catch (error: any) {
+          console.error('Error during registration', error);
+      }
+
     } else {
-      console.log('Form is invalid');
+      this.registerForm.markAllAsTouched();
     }
   }
 

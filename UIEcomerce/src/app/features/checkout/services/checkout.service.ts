@@ -20,7 +20,9 @@ export class CheckoutService{
                 })
             ).subscribe(
                 {
-                    error: (err) => console.error(err)
+                    error: (err) => {
+                      console.error(err)
+                    }
                 }
             );
     }
