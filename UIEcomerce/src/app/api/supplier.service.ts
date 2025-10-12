@@ -46,7 +46,7 @@ export class SuppliersService {
         return this._http.put<Supplier>(`${this._endpoint}/suppliers/${id}`, supplier).pipe(  
             tap((updated) => {  
                 this.suppliers.update(suppliers =>  
-                    suppliers.map(s => s.id === id ? updated : s)  
+                    suppliers.map(s => s.Id === id ? updated : s)  
                 );  
             })  
         );  
@@ -56,7 +56,7 @@ export class SuppliersService {
     public deleteSupplier(id: string) {  
         return this._http.delete(`${this._endpoint}/suppliers/${id}`).pipe(  
             tap(() => {  
-                this.suppliers.update(suppliers => suppliers.filter(s => s.id !== id));  
+                this.suppliers.update(suppliers => suppliers.filter(s => s.Id !== id));  
             })  
         );  
     }  

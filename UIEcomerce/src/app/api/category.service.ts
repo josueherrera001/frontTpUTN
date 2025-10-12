@@ -20,21 +20,21 @@ export class CategoriesService {
     public getCategories(): void {
         this._http.get<Category[]>(`${this._endpoint}categories`)
             .pipe(
-                tap((categories: Category[]) => this.categories.set(categories)
-            ))
+                tap((categories: Category[]) => this.categories.set(categories))
+            )
             .subscribe();
     }
 
     // GET CATEGORY BY ID
     public getCategoryById(id: string) {
         return runInInjectionContext(this._injector, () =>
-            toSignal<Category>(this._http.get<Category>(`${this._endpoint}/categories/${id}`))
+            toSignal<Category>(this._http.get<Category>(`${this._endpoint}categories/${id}`))
         );
     }
 
     // POST: create CATEGORY
     public createCategory(category: Omit<Category, "id">) {
-        return this._http.post<Category>(`${this._endpoint}/categories`, category).pipe(
+        return this._http.post<Category>(`${this._endpoint}categories`, category).pipe(
             tap((newCategory) => {
                 this.categories.update(categories => [...categories, newCategory]);
             })
@@ -43,10 +43,10 @@ export class CategoriesService {
 
     // PUT: update CATEGORY
     public updateCategory(id: string, category: Partial<Category>) {
-        return this._http.put<Category>(`${this._endpoint}/categories/${id}`, category).pipe(
+        return this._http.put<Category>(`${this._endpoint}categories/${id}`, category).pipe(
             tap((updated) => {
                 this.categories.update(categories =>
-                    categories.map(c => c.id === id ? updated : c)
+                    categories.map(c => c.Id === id ? updated : c)
                 );
             })
         );
@@ -54,9 +54,9 @@ export class CategoriesService {
 
     // DELETE: delete CATEGORY
     public deleteCategory(id: string) {
-        return this._http.delete(`${this._endpoint}/categories/${id}`).pipe(
+        return this._http.delete(`${this._endpoint}categories/${id}`).pipe(
             tap(() => {
-                this.categories.update(categories => categories.filter(c => c.id !== id));
+                this.categories.update(categories => categories.filter(c => c.Id !== id));
             })
         );
     }

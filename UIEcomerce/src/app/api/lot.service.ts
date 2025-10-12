@@ -46,7 +46,7 @@ export class LotsService {
         return this._http.put<Lot>(`${this._endpoint}/lots/${id}`, lot).pipe(  
             tap((updated) => {  
                 this.lots.update(lots =>  
-                    lots.map(l => l.id === id ? updated : l)  
+                    lots.map(l => l.Id === id ? updated : l)  
                 );  
             })  
         );  
@@ -56,7 +56,7 @@ export class LotsService {
     public deleteLot(id: string) {  
         return this._http.delete(`${this._endpoint}/lots/${id}`).pipe(  
             tap(() => {  
-                this.lots.update(lots => lots.filter(l => l.id !== id));  
+                this.lots.update(lots => lots.filter(l => l.Id !== id));  
             })  
         );  
     }  

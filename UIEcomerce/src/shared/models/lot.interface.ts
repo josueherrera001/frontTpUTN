@@ -1,5 +1,5 @@
 export interface Lot {  
-    id: string;  
+    Id: string;  
     ProductId: string;  
     LotCode: string;  
     ProductCode: string;  

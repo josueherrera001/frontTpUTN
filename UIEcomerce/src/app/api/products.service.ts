@@ -44,7 +44,7 @@ export class ProductsService{
     return this._http.put<Product>(`${this._endpoint}/${id}`, product).pipe(
       tap((updated) => {
         this.products.update(products =>
-          products.map(p => p.id === id ? { ...updated, qty: 1 } : p)
+          products.map(p => p.Id === id ? { ...updated, qty: 1 } : p)
         );
       })
     );
@@ -54,7 +54,7 @@ export class ProductsService{
   public deleteProduct(id: number) {
     return this._http.delete(`${this._endpoint}/${id}`).pipe(
       tap(() => {
-        this.products.update(products => products.filter(p => p.id !== id));
+        this.products.update(products => products.filter(p => p.Id !== id));
       })
     );
     
