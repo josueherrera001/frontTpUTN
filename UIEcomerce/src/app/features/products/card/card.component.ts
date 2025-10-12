@@ -9,7 +9,7 @@ import { Product } from 'shared/models/product.interface';
   imports: [CurrencyPipe, SlicePipe, RouterLink],
   template:`
   <div class="p-4 mt-2 mb-6 overflow-hidden rounded-b-lg shadow-none hover:shadow-xl">
-    <a class="relative block h-48 overflow-hidden rounded" [routerLink]="['/products', product().id]">
+    <a class="relative block h-48 overflow-hidden rounded" [routerLink]="['/products', product().Id]">
       <img
         class="w-full transition duration-500 transform hover:scale-105"
         src="{{ product().image }}"
@@ -22,7 +22,7 @@ import { Product } from 'shared/models/product.interface';
       {{ product().category }}
       </h3>
       <h2 class="py-4 text-lg font-medium text-gray-900 title-font">
-        <a  [routerLink]="['/products', product().id]">
+        <a  [routerLink]="['/products', product().Id]">
             {{ product().title | slice : 0 : 30 }}
         </a>
       </h2>

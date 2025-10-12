@@ -32,6 +32,7 @@ export class ProductFormComponent {
     }
 
     this.productService.createProduct({
+      Id: 0, // El ID será asignado por el backend
       title: this.product.title!,
       price: this.product.price!,
       category: this.product.category!,

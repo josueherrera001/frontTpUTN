@@ -24,7 +24,7 @@ export const CartStore = signalStore(
     })),
     withMethods( ({products, ...store}, toastrSvc =inject(ToastrService)) => ({
         addToCart(product:Product){
-            const isProductInCart = products().find( (pro) =>pro.id === product.id);
+            const isProductInCart = products().find( (pro) =>pro.Id === product.Id);
             if (isProductInCart){
                 isProductInCart.qty++;
                 isProductInCart.subTotal = isProductInCart.qty * isProductInCart.price;
@@ -36,14 +36,14 @@ export const CartStore = signalStore(
             toastrSvc.success('Producto agregado','TP UTN');
         },
         removeFromCart(id: number){
-            const updateProduct = products().filter( product => product.id == id);
+            const updateProduct = products().filter( product => product.Id == id);
             if (updateProduct[0].qty > 1){
                 updateProduct[0].qty--;
 
                 patchState(store,{ products: [...products()]});
             }
             else{
-                const updateProductone = products().filter( product => product.id != id);
+                const updateProductone = products().filter( product => product.Id != id);
                 patchState(store,{ products: updateProductone });
             }
             toastrSvc.info('Producto eliminado','TP UTN');
