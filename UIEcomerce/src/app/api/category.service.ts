@@ -46,7 +46,7 @@ export class CategoriesService {
         return this._http.put<Category>(`${this._endpoint}/categories/${id}`, category).pipe(  
             tap((updated) => {  
                 this.categories.update(categories =>  
-                    categories.map(c => c.id === id ? updated : c)  
+                    categories.map(c => c.Id === id ? updated : c)  
                 );  
             })  
         );  
@@ -56,7 +56,7 @@ export class CategoriesService {
     public deleteCategory(id: string) {  
         return this._http.delete(`${this._endpoint}/categories/${id}`).pipe(  
             tap(() => {  
-                this.categories.update(categories => categories.filter(c => c.id !== id));  
+                this.categories.update(categories => categories.filter(c => c.Id !== id));  
             })  
         );  
     }  
