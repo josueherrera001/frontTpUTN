@@ -1,16 +1,19 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriesService } from '@api/category.service';
 import { Category } from 'shared/models/category.interface';
 import { ToastrService } from "ngx-toastr";
 import Swal from 'sweetalert2';
+import { SubCategoriesService } from '@api/subcategory.service';
+import { SubCategory } from 'shared/models/subcategory.interface';
+import { MadalactionComponent } from '../madalaction/madalaction.component';
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
   imports: [
-    DatePipe,ReactiveFormsModule, CommonModule/*,
+    DatePipe,ReactiveFormsModule, CommonModule, MadalactionComponent/*,
     FormheaderComponent,FormaddheaderComponent,AddComponent*/
   ],
   templateUrl: './category-list.component.html',
@@ -18,20 +21,23 @@ import Swal from 'sweetalert2';
 })
 export default class CategoryListComponent {
   frmForm!: FormGroup;
+  @ViewChild('soncategory') childComponent!: MadalactionComponent;
 
-
-  public titlemsg:String ='Lista de Categorías';
-  public headeremsg:String ='En esta pantalla se va a poder ver todas las categoria diosponible y manipularlas.(Modificar, eliminar y agregar sub categoria)';
-
-  public data_title:String ='Agregar subcategoría';
-  public msgheader: String = 'Agregar Categoría';
-  public msgbody: String =
-    'Gestione las categorías de productos de su tienda. Puede agregar nuevas categorías, editar las existentes o eliminarlas si ya no son necesarias. Mantener sus categorías organizadas ayuda a los clientes a encontrar fácilmente los productos que buscan.';
+public titlemsg: string = 'Lista de Categorías';
+public headeremsg: string = 'En esta pantalla se va a poder ver todas las categoria diosponible y manipularlas.(Modificar, eliminar y agregar sub categoria)';
+public categoryname: string = '';
+public data_title: string = 'Agregar subcategoría';
+public msgheader: string = 'Agregar Categoría';
+public msgbody: string =
+  'Gestione las categorías de productos de su tienda. Puede agregar nuevas categorías, editar las existentes o eliminarlas si ya no son necesarias. Mantener sus categorías organizadas ayuda a los clientes a encontrar fácilmente los productos que buscan.';
 
   private readonly categorySvc = inject(CategoriesService);
+  private readonly subcategorySvc = inject(SubCategoriesService);
   private readonly toastrSvc = inject(ToastrService);
 
   categories = this.categorySvc.categories;
+  subcategories:SubCategory[] =[];
+
   constructor(
     private readonly fb: FormBuilder
   ) { this.createForm();
@@ -43,8 +49,20 @@ export default class CategoryListComponent {
           Description: ['']
         });
       }
-
-  showModalCreateCategory(Id: string = '', option: String){
+      showModalCreateCategoryhija(){
+        // let dialog = document.getElementById('popup-modal-add');
+        //   dialog!.classList.remove('hiddenmodal');
+        //   dialog!.classList.add('showmodal');
+          debugger;
+          //  this.subcategorySvc.getSubCategories(Id).subscribe(
+          //   (Response:SubCategory[]) =>{
+          //     debugger;
+          //       this.subcategories = Response;
+          //   }
+          // );
+          this.childComponent.showModalCreateCategory();
+      }
+  showModalCreateCategory(Id: string = '', option: string, categoryname: string = ''){
     debugger;
     if ( option === 'Editar' ) {
       this.msgbody ="";
@@ -60,7 +78,26 @@ export default class CategoryListComponent {
     }
     if ( option === 'Agregar' ) this.msgbody =`Cree una nueva categoría para organizar sus productos de manera efectiva. Asigne un nombre claro y una descripción relevante que facilite a los clientes la identificación de los productos dentro de esa categoría. Una buena categorización mejora la experiencia de compra y la navegación en su tienda.`;
     if ( option === 'Subcategoría' )
-    this.msgbody =`Cree Subcategoría para organizar mejor sus productos dentro de la categoría seleccionada. Las subcategorías permiten una clasificación más detallada, facilitando a los clientes la búsqueda de productos específicos. Asegúrese de que las subcategorías sean relevantes y claras para mejorar la experiencia de compra.`;
+    {
+      this.categoryname = categoryname;
+      this.msgbody =`Cree Subcategoría para organizar mejor sus productos dentro de la categoría seleccionada. Las subcategorías permiten una clasificación más detallada, facilitando a los clientes la búsqueda de productos específicos. Asegúrese de que las subcategorías sean relevantes y claras para mejorar la experiencia de compra.`;
+         const categoryElement = document.getElementById('category');
+         if (categoryElement) {
+           categoryElement.innerHTML = "Categoria : " + categoryname;
+         }
+
+         let dialog = document.getElementById('popup-modal-subcategory');
+          dialog!.classList.remove('hiddenmodal');
+          dialog!.classList.add('showmodal');
+          debugger;
+           this.subcategorySvc.getSubCategories(Id).subscribe(
+            (Response:SubCategory[]) =>{
+              debugger;
+                this.subcategories = Response;
+            }
+          );
+      return;
+    }
 
 
     let dialog = document.getElementById('popup-modal-category');
@@ -68,8 +105,9 @@ export default class CategoryListComponent {
     dialog!.classList.add('showmodal');
   }
 
-  hideModalcategory() {
-    let dialog = document.getElementById('popup-modal-category');
+  hideModalcategory(Id: string ='popup-modal-category') {
+    debugger;
+    let dialog = document.getElementById(Id);
 
     dialog!.classList.remove('showmodal');
     dialog!.classList.add('hiddenmodal');
