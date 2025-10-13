@@ -46,6 +46,11 @@ export const routes: Routes = [
             path: 'lotactions',  
             data: { roles: ['Admin'] },  
             loadComponent: () => import('./modules/lots/lot-list/lot-list.component')  
+          },
+{  
+            path:'supplieractions',  
+            data: { roles: ['Admin'] },  
+            loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')  
           }
         ]
       }
