@@ -32,7 +32,7 @@ export class ProductsService{
     }
 //POST: create PRODUCT
     public createProduct(product: Omit<Product, "id">) {
-        return this._http.post<Product>( this._endpoint, product).pipe(
+        return this._http.post<Product>('${this._endpoint}/products',product).pipe(
         tap((newProduct ) => {
             this.products.update(products => [...products, { ...newProduct, qty:1}]);
         })

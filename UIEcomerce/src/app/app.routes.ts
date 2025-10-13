@@ -41,6 +41,11 @@ export const routes: Routes = [
             // canActivate: [roleGuard,authGuardGuard],
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/categories/category-list/category-list.component') // componente standalone
+          },
+          {  
+            path: 'lotactions',  
+            data: { roles: ['Admin'] },  
+            loadComponent: () => import('./modules/lots/lot-list/lot-list.component')  
           }
         ]
       }
