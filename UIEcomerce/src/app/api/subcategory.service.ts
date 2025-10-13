@@ -24,13 +24,13 @@ export class SubCategoriesService {
     // GET SUBCATEGORY BY ID
     public getSubCategoryById(id: string) {
         return runInInjectionContext(this._injector, () =>
-            toSignal<SubCategory>(this._http.get<SubCategory>(`${this._endpoint}/subcategories/${id}`))
+            toSignal<SubCategory>(this._http.get<SubCategory>(`${this._endpoint}subcategories/${id}`))
         );
     }
 
     // POST: create SUBCATEGORY
     public createSubCategory(subCategory: Omit<SubCategory, "Id">) {
-        return this._http.post<SubCategory>(`${this._endpoint}/subcategories`, subCategory).pipe(
+        return this._http.post<SubCategory>(`${this._endpoint}subcategories`, subCategory).pipe(
             tap((newSubCategory) => {
                 this.subCategories.update(subCategories => [...subCategories, newSubCategory]);
             })
@@ -39,7 +39,7 @@ export class SubCategoriesService {
 
     // PUT: update SUBCATEGORY
     public updateSubCategory(id: string, subCategory: Partial<SubCategory>) {
-        return this._http.put<SubCategory>(`${this._endpoint}/subcategories/${id}`, subCategory).pipe(
+        return this._http.put<SubCategory>(`${this._endpoint}subcategories/${id}`, subCategory).pipe(
             tap((updated) => {
                 this.subCategories.update(subCategories =>
                     subCategories.map(sc => sc.Id === id ? updated : sc)
@@ -50,7 +50,7 @@ export class SubCategoriesService {
 
     // DELETE: delete SUBCATEGORY
     public deleteSubCategory(id: string) {
-        return this._http.delete(`${this._endpoint}/subcategories/${id}`).pipe(
+        return this._http.delete(`${this._endpoint}subcategories/${id}`).pipe(
             tap(() => {
                 this.subCategories.update(subCategories => subCategories.filter(sc => sc.Id !== id));
             })

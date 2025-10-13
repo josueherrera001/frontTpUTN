@@ -1,9 +1,14 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CategoriesService } from '@api/category.service';
 import { Category } from 'shared/models/category.interface';
-import { ToastrService } from "ngx-toastr";
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { SubCategoriesService } from '@api/subcategory.service';
 import { SubCategory } from 'shared/models/subcategory.interface';
@@ -13,8 +18,11 @@ import { MadalactionComponent } from '../madalaction/madalaction.component';
   selector: 'app-category-list',
   standalone: true,
   imports: [
-    DatePipe,ReactiveFormsModule, CommonModule, MadalactionComponent/*,
-    FormheaderComponent,FormaddheaderComponent,AddComponent*/
+    DatePipe,
+    ReactiveFormsModule,
+    CommonModule,
+    MadalactionComponent /*,
+    FormheaderComponent,FormaddheaderComponent,AddComponent*/,
   ],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss',
@@ -23,205 +31,269 @@ export default class CategoryListComponent {
   frmForm!: FormGroup;
   @ViewChild('soncategory') childComponent!: MadalactionComponent;
 
-public titlemsg: string = 'Lista de Categorías';
-public headeremsg: string = 'En esta pantalla se va a poder ver todas las categoria diosponible y manipularlas.(Modificar, eliminar y agregar sub categoria)';
-public categoryname: string = '';
-public data_title: string = 'Agregar subcategoría';
-public msgheader: string = 'Agregar Categoría';
-public msgbody: string =
-  'Gestione las categorías de productos de su tienda. Puede agregar nuevas categorías, editar las existentes o eliminarlas si ya no son necesarias. Mantener sus categorías organizadas ayuda a los clientes a encontrar fácilmente los productos que buscan.';
+  public titlemsg: string = 'Lista de Categorías';
+  public headeremsg: string =
+    'En esta pantalla se va a poder ver todas las categoria diosponible y manipularlas.(Modificar, eliminar y agregar sub categoria)';
+  public categoryname: string = '';
+  public data_title: string = 'Agregar subcategoría';
+  public msgheader: string = 'Agregar Categoría';
+  public msgbody: string =
+    'Gestione las categorías de productos de su tienda. Puede agregar nuevas categorías, editar las existentes o eliminarlas si ya no son necesarias. Mantener sus categorías organizadas ayuda a los clientes a encontrar fácilmente los productos que buscan.';
 
   private readonly categorySvc = inject(CategoriesService);
   private readonly subcategorySvc = inject(SubCategoriesService);
   private readonly toastrSvc = inject(ToastrService);
 
   categories = this.categorySvc.categories;
-  subcategories:SubCategory[] =[];
+  subcategories: SubCategory[] = [];
 
-  constructor(
-    private readonly fb: FormBuilder
-  ) { this.createForm();
-    }
-    private createForm():void{
-        this.frmForm = this.fb.group({
-          Id: [''],
-          Name: ['',[Validators.required]],
-          Description: ['']
-        });
-      }
-      showModalCreateCategoryhija(){
-        // let dialog = document.getElementById('popup-modal-add');
-        //   dialog!.classList.remove('hiddenmodal');
-        //   dialog!.classList.add('showmodal');
-          debugger;
-          //  this.subcategorySvc.getSubCategories(Id).subscribe(
-          //   (Response:SubCategory[]) =>{
-          //     debugger;
-          //       this.subcategories = Response;
-          //   }
-          // );
-          this.childComponent.showModalCreateCategory();
-      }
-  showModalCreateCategory(Id: string = '', option: string, categoryname: string = ''){
+  constructor(private readonly fb: FormBuilder) {
+    this.createForm();
+  }
+  private createForm(): void {
+    this.frmForm = this.fb.group({
+      Id: [''],
+      Name: ['', [Validators.required]],
+      Description: [''],
+    });
+  }
+  showModalCreateCategoryhija() {
+    // let dialog = document.getElementById('popup-modal-add');
+    //   dialog!.classList.remove('hiddenmodal');
+    //   dialog!.classList.add('showmodal');
     debugger;
-    if ( option === 'Editar' ) {
-      this.msgbody ="";
-      this.msgheader = "";
+    //  this.subcategorySvc.getSubCategories(Id).subscribe(
+    //   (Response:SubCategory[]) =>{
+    //     debugger;
+    //       this.subcategories = Response;
+    //   }
+    // );
+    // this.childComponent.showModalCreateCategory();
+  }
+  showModalCreateCategory(
+    Id: string = '',
+    option: string,
+    categoryname: string = ''
+  ) {
+    debugger;
+    if (option === 'Editar') {
+      this.msgbody = '';
+      this.msgheader = '';
 
       this.msgheader = 'Editar categoría';
-      this.msgbody =`Edite la categoría seleccionada para actualizar su información. Asegúrese de que los cambios reflejen con precisión la naturaleza de los productos que contiene la categoría. Mantener las categorías actualizadas ayuda a los clientes a navegar y encontrar productos fácilmente.`;
+      this.msgbody = `Edite la categoría seleccionada para actualizar su información. Asegúrese de que los cambios reflejen con precisión la naturaleza de los productos que contiene la categoría. Mantener las categorías actualizadas ayuda a los clientes a navegar y encontrar productos fácilmente.`;
 
-      const resp = this.categorySvc.getCategoryById(Id).subscribe( (resp) =>{
-           this.frmForm.patchValue(resp);
+      const resp = this.categorySvc.getCategoryById(Id).subscribe((resp) => {
+        this.frmForm.patchValue(resp);
       });
-
     }
-    if ( option === 'Agregar' ) this.msgbody =`Cree una nueva categoría para organizar sus productos de manera efectiva. Asigne un nombre claro y una descripción relevante que facilite a los clientes la identificación de los productos dentro de esa categoría. Una buena categorización mejora la experiencia de compra y la navegación en su tienda.`;
-    if ( option === 'Subcategoría' )
-    {
+    if (option === 'Agregar')
+      this.msgbody = `Cree una nueva categoría para organizar sus productos de manera efectiva. Asigne un nombre claro y una descripción relevante que facilite a los clientes la identificación de los productos dentro de esa categoría. Una buena categorización mejora la experiencia de compra y la navegación en su tienda.`;
+    if (option === 'Subcategoría') {
       this.categoryname = categoryname;
-      this.msgbody =`Cree Subcategoría para organizar mejor sus productos dentro de la categoría seleccionada. Las subcategorías permiten una clasificación más detallada, facilitando a los clientes la búsqueda de productos específicos. Asegúrese de que las subcategorías sean relevantes y claras para mejorar la experiencia de compra.`;
-         const categoryElement = document.getElementById('category');
-         if (categoryElement) {
-           categoryElement.innerHTML = "Categoria : " + categoryname;
-         }
+      const categoryIdElement = document.getElementById('categoryId');
+      debugger;
+      if (categoryIdElement) {
+        (categoryIdElement as HTMLInputElement).value = Id;
+      }
 
-         let dialog = document.getElementById('popup-modal-subcategory');
-          dialog!.classList.remove('hiddenmodal');
-          dialog!.classList.add('showmodal');
+      this.msgbody = `Cree Subcategoría para organizar mejor sus productos dentro de la categoría seleccionada. Las subcategorías permiten una clasificación más detallada, facilitando a los clientes la búsqueda de productos específicos. Asegúrese de que las subcategorías sean relevantes y claras para mejorar la experiencia de compra.`;
+      const categoryElement = document.getElementById('category');
+      if (categoryElement) {
+        categoryElement.innerHTML = 'Categoria : ' + categoryname;
+      }
+
+      let dialog = document.getElementById('popup-modal-subcategory');
+      dialog!.classList.remove('hiddenmodal');
+      dialog!.classList.add('showmodal');
+      debugger;
+      this.subcategorySvc
+        .getSubCategories(Id)
+        .subscribe((Response: SubCategory[]) => {
           debugger;
-           this.subcategorySvc.getSubCategories(Id).subscribe(
-            (Response:SubCategory[]) =>{
-              debugger;
-                this.subcategories = Response;
-            }
-          );
+          this.subcategories = Response;
+        });
       return;
     }
-
 
     let dialog = document.getElementById('popup-modal-category');
     dialog!.classList.remove('hiddenmodal');
     dialog!.classList.add('showmodal');
   }
-
-  hideModalcategory(Id: string ='popup-modal-category') {
+  showModalCreateSubCategory() {
+    this.msgheader = 'Agregar sub categoría';
+    let dialog = document.getElementById('popup-modal-add');
+    dialog!.classList.remove('hiddenmodal');
+    dialog!.classList.add('showmodal');
+  }
+  hideModalcategory(Id: string = 'popup-modal-category') {
     debugger;
     let dialog = document.getElementById(Id);
 
     dialog!.classList.remove('showmodal');
     dialog!.classList.add('hiddenmodal');
   }
-  onSubmit(){
+  onSubmit() {
     debugger;
     if (this.frmForm.valid) {
       const formData = this.frmForm.value;
       const newCategory: Category = {
         Id: '', // This will be generated by the backend
         Name: formData.Name,
-        Description: formData.Description
+        Description: formData.Description,
       };
-      if ( !this.frmForm.value.Id){
+      if (!this.frmForm.value.Id) {
         this.addCategory(this.frmForm.value);
-      }
-      else{
+      } else {
         this.updateCategory(this.frmForm.value);
       }
-
-
     } else {
       this.frmForm.markAllAsTouched();
     }
   }
 
-  addCategory(newCategory:Category){
+  onAddSubCategory(sub: SubCategory) {
+    debugger;
+    if (!this.frmForm.value.Id) {
+      this.addSuCategory(sub);
+    } else {
+      this.updateSubCategory(sub);
+    }
+  }
+
+  addCategory(newCategory: Category) {
     this.categorySvc.createCategory(newCategory).subscribe({
+      next: (response: any) => {
+        let res = response;
+        debugger;
+        this.toastrSvc.success(
+          'La categoria fue creada con exito',
+          'Sistema de Gestion y de ventas'
+        );
+        this.hideModalcategory();
+        this.categorySvc.getCategories();
+        this.frmForm.reset();
+      },
+      error: (err: any) => {
+        debugger;
+        this.toastrSvc.error(
+          'La categoria no fue creada',
+          'Sistema de Gestion y de ventas'
+        );
+        this.frmForm.reset();
+      },
+    });
+  }
+
+  updateCategory(newCategory: Category) {
+    this.categorySvc.updateCategory(newCategory.Id, newCategory).subscribe({
+      next: (response: any) => {
+        this.toastrSvc.success(
+          'La categoria fue actualizada con exito',
+          'Sistema de Gestion y de ventas'
+        );
+        this.hideModalcategory();
+        this.categorySvc.getCategories();
+        this.frmForm.reset();
+        this.frmForm.reset();
+      },
+      error: (err: any) => {
+        this.toastrSvc.error(
+          'La categoria no fue actualizada',
+          'Sistema de Gestion y de ventas'
+        );
+        this.frmForm.reset();
+      },
+    });
+  }
+
+   addSuCategory(subCategory:SubCategory){
+    this.subcategorySvc.createSubCategory(subCategory).subscribe({
         next: (response: any) => {
           let res = response;
           debugger;
-          this.toastrSvc.success('La categoria fue creada con exito','Sistema de Gestion y de ventas');
-          this.hideModalcategory();
-          this.categorySvc.getCategories();
+          this.toastrSvc.success('La sub categoria fue creada con exito','Sistema de Gestion y de ventas');
+          this.hideModalcategory('popup-modal-add');
+          this.subcategorySvc.getSubCategories(subCategory.CategoryId);
           this.frmForm.reset();
         },
         error: (err: any) => {
           debugger;
-          this.toastrSvc.error('La categoria no fue creada','Sistema de Gestion y de ventas');
+          this.toastrSvc.error('La sub categoria no fue creada','Sistema de Gestion y de ventas');
           this.frmForm.reset();
         },
       });
   }
 
-  updateCategory(newCategory:Category){
-    this.categorySvc.updateCategory( newCategory.Id,newCategory).subscribe({
+  updateSubCategory(subCategory:SubCategory){
+    this.subcategorySvc.updateSubCategory( subCategory.Id,subCategory).subscribe({
         next: (response: any) => {
-          this.toastrSvc.success('La categoria fue actualizada con exito','Sistema de Gestion y de ventas');
-          this.hideModalcategory();
-          this.categorySvc.getCategories();
+          this.toastrSvc.success('La subcategoria fue actualizada con exito','Sistema de Gestion y de ventas');
+          this.hideModalcategory('popup-modal-add');
+          this.subcategorySvc.getSubCategories(subCategory.CategoryId);
           this.frmForm.reset();
           this.frmForm.reset();
         },
         error: (err: any) => {
-          this.toastrSvc.error('La categoria no fue actualizada','Sistema de Gestion y de ventas');
+          this.toastrSvc.error('La subcategoria no fue actualizada','Sistema de Gestion y de ventas');
           this.frmForm.reset();
         },
       });
   }
 
-
-        showAlert(id: string): void {
-          const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton:
-                'text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 bg-green-500',
-              cancelButton:
-                'text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2',
-            },
-            buttonsStyling: true,
-          });
-          swalWithBootstrapButtons
-            .fire({
-              title: '¿Estas seguro desee eliminar la descripcion sobre ti?',
-              text: 'No podrás revertir esto!',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Aceptar',
-              cancelButtonText: 'Cancelar',
-              reverseButtons: true,
-            })
-            .then((result) => {
-              if (result.isConfirmed) {
-                this.categorySvc.deleteCategory(id).subscribe({
-                  next: (result: any) => {
-                    if (result) {
-                       swalWithBootstrapButtons.fire({
-                        title: 'Eliminar archivo!',
-                        text: 'Tu archivo fue eliminado con exito!.',
-                        icon: 'success',
-                      });
-                      location.reload();
-                    } else {
-                      swalWithBootstrapButtons.fire({
-                        title: 'Cancelar',
-                        text: 'Tu archivo no fue eliminado :)',
-                        icon: 'error',
-                      });
-                    }
-                  },
-                  error: (err) => {
-                    alert('An error occurred during login. Please try again later.');
-                  },
+  showAlert(id: string): void {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton:
+          'text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 bg-green-500',
+        cancelButton:
+          'text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2',
+      },
+      buttonsStyling: true,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title: '¿Estas seguro desee eliminar la descripcion sobre ti?',
+        text: 'No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.categorySvc.deleteCategory(id).subscribe({
+            next: (result: any) => {
+              if (result) {
+                swalWithBootstrapButtons.fire({
+                  title: 'Eliminar archivo!',
+                  text: 'Tu archivo fue eliminado con exito!.',
+                  icon: 'success',
                 });
-              } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === 'cancel'
-              ) {
+                location.reload();
+              } else {
                 swalWithBootstrapButtons.fire({
                   title: 'Cancelar',
                   text: 'Tu archivo no fue eliminado :)',
                   icon: 'error',
                 });
               }
-            });
+            },
+            error: (err) => {
+              alert('An error occurred during login. Please try again later.');
+            },
+          });
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === 'cancel'
+        ) {
+          swalWithBootstrapButtons.fire({
+            title: 'Cancelar',
+            text: 'Tu archivo no fue eliminado :)',
+            icon: 'error',
+          });
         }
+      });
+  }
 }
