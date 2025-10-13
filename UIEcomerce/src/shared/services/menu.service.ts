@@ -11,7 +11,7 @@ export class MenuService {
 
   public menus = signal<Menu[]>([]);
   private readonly _http = inject(HttpClient);
-  private readonly _endpoint = environment.apiURLlocal + 'menus';
+  private readonly _endpoint = environment.apiURLlocal + '/menus';
 
   constructor() {
     this.getMenus();

@@ -9,7 +9,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class SuppliersService {  
     public suppliers = signal<Supplier[]>([]);  
     private readonly _http = inject(HttpClient);  
-    private readonly _endpoint = environment.apiURL;  
+    private readonly _endpoint = environment.apiURLlocal;  
     private readonly _injector = inject(EnvironmentInjector);  
   
     constructor() {  
