@@ -37,7 +37,7 @@ export default class SupplierListComponent {
       CompanyName: ['', [Validators.required]],  
       Address: ['', [Validators.required]],  
       Email: ['', [Validators.email]],  
-      gitPhone: ['', [Validators.required]],
+      Phone: ['', [Validators.required]],
       Web: ['']  
     });  
   }  
