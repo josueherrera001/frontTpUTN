@@ -8,7 +8,10 @@ export const ErrorResponseInterceptor:HttpInterceptorFn = (
     next(req).pipe(catchError(handlerErrorResponse));
 
 function handlerErrorResponse(error: HttpErrorResponse):ReturnType<typeof throwError>{
-    const errorResponse = `Error code:${error.status}, message:${error.message}`;
+    const errorResponse = {
+      error: error.error.error.code,
+      message: error.error.error.message
+    };
       debugger;
     return throwError( () => errorResponse);
 }

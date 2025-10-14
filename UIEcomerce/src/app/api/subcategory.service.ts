@@ -23,9 +23,7 @@ export class SubCategoriesService {
 
     // GET SUBCATEGORY BY ID
     public getSubCategoryById(id: string) {
-        return runInInjectionContext(this._injector, () =>
-            toSignal<SubCategory>(this._http.get<SubCategory>(`${this._endpoint}subcategories/${id}`))
-        );
+        return (this._http.get<SubCategory>(`${this._endpoint}subcategories/${id}`));
     }
 
     // POST: create SUBCATEGORY
