@@ -26,12 +26,15 @@ export class SuppliersService {
     }  
   
     // GET SUPPLIER BY ID  
-    public getSupplierById(id: string) {  
+    /*public getSupplierById(id: string) {  
         return runInInjectionContext(this._injector, () =>  
             toSignal<Supplier>(this._http.get<Supplier>(`${this._endpoint}/suppliers/${id}`))  
-        );  
-    }  
-  
+        ); 
+        
+    }  */
+  public getSupplierById(id: string) {  
+    return this._http.get<Supplier>(`${this._endpoint}/suppliers/${id}`);  
+        }
     // POST: create SUPPLIER  
     public createSupplier(supplier: Omit<Supplier, "id">) {  
         return this._http.post<Supplier>(`${this._endpoint}/suppliers`, supplier).pipe(  
