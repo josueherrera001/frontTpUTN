@@ -45,7 +45,7 @@ export default class SupplierListComponent {
   showModalCreateSupplier(Id: string = '', option: String) {  
   if (option === 'Editar') {  
     this.msgheader = 'Editar Proveedor';  
-    this.msgbody = 'Edite el proveedor seleccionado para actualizar su información. Asegúrese de que los cambios reflejen con precisión los datos del proveedor.';  
+    this.msgbody = 'Edite el proveedor seleccionado para actualizar su información.';  
   
     this.supplierSvc.getSupplierById(Id).subscribe((resp) => {  
       this.frmForm.patchValue(resp);  
@@ -53,14 +53,14 @@ export default class SupplierListComponent {
   }  
   if (option === 'Agregar') {  
     this.msgheader = 'Agregar Proveedor';  
-    this.msgbody = 'Cree un nuevo proveedor para gestionar sus productos. Asigne información clara y completa.';
+    this.msgbody = 'Cree un nuevo proveedor para gestionar sus productos.';  
     this.frmForm.reset();  
   }  
   
   let dialog = document.getElementById('popup-modal-supplier');  
   dialog!.classList.remove('hiddenmodal');  
   dialog!.classList.add('showmodal');  
-} 
+}
     
   hideModalSupplier() {  
     let dialog = document.getElementById('popup-modal-supplier');  

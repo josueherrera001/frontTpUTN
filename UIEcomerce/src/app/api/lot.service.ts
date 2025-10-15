@@ -18,7 +18,7 @@ export class LotsService {
   
     // GET LOTS LIST  
     public getLots(): void {  
-        this._http.get<Lot[]>(`${this._endpoint}/lots`)  
+        this._http.get<Lot[]>(`${this._endpoint}lots`)  
             .pipe(  
                 tap((lots: Lot[]) => this.lots.set(lots))  
             )  
@@ -28,13 +28,13 @@ export class LotsService {
     // GET LOT BY ID  
     public getLotById(id: string) {  
         return runInInjectionContext(this._injector, () =>  
-            toSignal<Lot>(this._http.get<Lot>(`${this._endpoint}/lots/${id}`))  
+            toSignal<Lot>(this._http.get<Lot>(`${this._endpoint}lots/${id}`))  
         );  
     }  
   
     // POST: create LOT  
     public createLot(lot: Omit<Lot, "id">) {  
-        return this._http.post<Lot>(`${this._endpoint}/lots`, lot).pipe(  
+        return this._http.post<Lot>(`${this._endpoint}lots`, lot).pipe(  
             tap((newLot) => {  
                 this.lots.update(lots => [...lots, newLot]);  
             })  
@@ -43,7 +43,7 @@ export class LotsService {
   
     // PUT: update LOT  
     public updateLot(id: string, lot: Partial<Lot>) {  
-        return this._http.put<Lot>(`${this._endpoint}/lots/${id}`, lot).pipe(  
+        return this._http.put<Lot>(`${this._endpoint}lots/${id}`, lot).pipe(  
             tap((updated) => {  
                 this.lots.update(lots =>  
                     lots.map(l => l.Id === id ? updated : l)  
@@ -54,7 +54,7 @@ export class LotsService {
   
     // DELETE: delete LOT  
     public deleteLot(id: string) {  
-        return this._http.delete(`${this._endpoint}/lots/${id}`).pipe(  
+        return this._http.delete(`${this._endpoint}lots/${id}`).pipe(  
             tap(() => {  
                 this.lots.update(lots => lots.filter(l => l.Id !== id));  
             })  

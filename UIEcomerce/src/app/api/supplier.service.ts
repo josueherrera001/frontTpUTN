@@ -18,7 +18,7 @@ export class SuppliersService {
   
     // GET SUPPLIERS LIST  
     public getSuppliers(): void {  
-        this._http.get<Supplier[]>(`${this._endpoint}/suppliers`)  
+        this._http.get<Supplier[]>(`${this._endpoint}suppliers`)  
             .pipe(  
                 tap((suppliers: Supplier[]) => this.suppliers.set(suppliers))  
             )  
@@ -27,14 +27,12 @@ export class SuppliersService {
   
     // GET SUPPLIER BY ID  
     public getSupplierById(id: string) {  
-        return runInInjectionContext(this._injector, () =>  
-            toSignal<Supplier>(this._http.get<Supplier>(`${this._endpoint}/suppliers/${id}`))  
-        );  
-    }  
+    return this._http.get<Supplier>(`${this._endpoint}suppliers/${id}`);  
+        }
   
     // POST: create SUPPLIER  
     public createSupplier(supplier: Omit<Supplier, "id">) {  
-        return this._http.post<Supplier>(`${this._endpoint}/suppliers`, supplier).pipe(  
+        return this._http.post<Supplier>(`${this._endpoint}suppliers`, supplier).pipe(  
             tap((newSupplier) => {  
                 this.suppliers.update(suppliers => [...suppliers, newSupplier]);  
             })  
@@ -43,7 +41,7 @@ export class SuppliersService {
   
     // PUT: update SUPPLIER  
     public updateSupplier(id: string, supplier: Partial<Supplier>) {  
-        return this._http.put<Supplier>(`${this._endpoint}/suppliers/${id}`, supplier).pipe(  
+        return this._http.put<Supplier>(`${this._endpoint}suppliers/${id}`, supplier).pipe(  
             tap((updated) => {  
                 this.suppliers.update(suppliers =>  
                     suppliers.map(s => s.Id === id ? updated : s)  
@@ -54,7 +52,7 @@ export class SuppliersService {
   
     // DELETE: delete SUPPLIER  
     public deleteSupplier(id: string) {  
-        return this._http.delete(`${this._endpoint}/suppliers/${id}`).pipe(  
+        return this._http.delete(`${this._endpoint}suppliers/${id}`).pipe(  
             tap(() => {  
                 this.suppliers.update(suppliers => suppliers.filter(s => s.Id !== id));  
             })  
