@@ -1,42 +1,42 @@
-import { CommonModule, DatePipe } from '@angular/common';  
-import { Component, inject } from '@angular/core';  
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';  
-import { SuppliersService } from '@api/supplier.service';  
-import { Supplier } from 'shared/models/supplier.interface';  
-import { ToastrService } from "ngx-toastr";  
-import Swal from 'sweetalert2';  
-  
-@Component({  
-  selector: 'app-supplier-list',  
-  standalone: true,  
-  imports: [ReactiveFormsModule, CommonModule],  
-  templateUrl: './supplier-list.component.html',  
-  styleUrl: './supplier-list.component.scss',  
-})  
-export default class SupplierListComponent {  
-  frmForm!: FormGroup;  
-    
-  public titlemsg: String = 'Lista de Proveedores';  
-  public headeremsg: String = 'En esta pantalla se va a poder ver todos los proveedores disponibles y manipularlos (Modificar, eliminar y agregar)';  
-    
-  public msgheader: String = 'Agregar Proveedor';  
-  public msgbody: String = 'Gestione los proveedores de su tienda. Puede agregar nuevos proveedores, editar los existentes o eliminarlos si ya no son necesarios.';  
-    
-  private readonly supplierSvc = inject(SuppliersService);  
-  private readonly toastrSvc = inject(ToastrService);  
-    
-  suppliers = this.supplierSvc.suppliers;  
-    
-  constructor(private readonly fb: FormBuilder) {  
-    this.createForm();  
-  }  
-    
-  private createForm(): void {  
-    this.frmForm = this.fb.group({  
-      Id: [''],  
-      CompanyName: ['', [Validators.required]],  
-      Address: ['', [Validators.required]],  
-      Email: ['', [Validators.email]],  
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SuppliersService } from '@api/supplier.service';
+import { Supplier } from 'shared/models/supplier.interface';
+import { ToastrService } from "ngx-toastr";
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'app-supplier-list',
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './supplier-list.component.html',
+  styleUrl: './supplier-list.component.scss',
+})
+export default class SupplierListComponent {
+  frmForm!: FormGroup;
+
+  public titlemsg: String = 'Lista de Proveedores';
+  public headeremsg: String = 'En esta pantalla se va a poder ver todos los proveedores disponibles y manipularlos (Modificar, eliminar y agregar)';
+
+  public msgheader: String = 'Agregar Proveedor';
+  public msgbody: String = 'Gestione los proveedores de su tienda. Puede agregar nuevos proveedores, editar los existentes o eliminarlos si ya no son necesarios.';
+
+  private readonly supplierSvc = inject(SuppliersService);
+  private readonly toastrSvc = inject(ToastrService);
+
+  suppliers = this.supplierSvc.suppliers;
+
+  constructor(private readonly fb: FormBuilder) {
+    this.createForm();
+  }
+
+  private createForm(): void {
+    this.frmForm = this.fb.group({
+      Id: [''],
+      CompanyName: ['', [Validators.required]],
+      Address: ['', [Validators.required]],
+      Email: ['', [Validators.email]],
       Phone: ['', [Validators.required]],
       Web: ['']  
     });  

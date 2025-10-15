@@ -3,6 +3,8 @@ import { ProductFormComponent } from '@features/products/product-form/product-fo
 import { authGuardGuard } from './guards/auth-guard.guard';
 import { roleGuard } from './guards/role.guard';
 import { HeaderComponent } from './layout/header/header.component';
+import SupplierListComponent from './modules/suppliers/supplier-list/supplier-list.component';
+import { PresentationsComponent } from './modules/presentations/presentations.component';
 
 export const routes: Routes = [
       {
@@ -22,9 +24,21 @@ export const routes: Routes = [
             import('@features/products/products.component').then(m => m.ProductsComponent),
           },
           {
-            path: 'products/new',
+            path: 'ProductActions',
             component: ProductFormComponent,
-            canActivate: [roleGuard],
+            // canActivate: [roleGuard],
+            data: { roles: ['Admin'] } // formulario standalone
+          },
+          {
+            path: 'suplierActions',
+            component: SupplierListComponent,
+            // canActivate: [roleGuard],
+            data: { roles: ['Admin'] } // formulario standalone
+          },
+          {
+            path: 'presentationactions',
+            component: PresentationsComponent,
+            // canActivate: [roleGuard],
             data: { roles: ['Admin'] } // formulario standalone
           },
           {
@@ -42,15 +56,15 @@ export const routes: Routes = [
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/categories/category-list/category-list.component') // componente standalone
           },
-          {  
-            path: 'lotactions',  
-            data: { roles: ['Admin'] },  
-            loadComponent: () => import('./modules/lots/lot-list/lot-list.component')  
+          {
+            path: 'lotactions',
+            data: { roles: ['Admin'] },
+            loadComponent: () => import('./modules/lots/lot-list/lot-list.component')
           },
-{  
-            path:'supplieractions',  
-            data: { roles: ['Admin'] },  
-            loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')  
+{
+            path:'supplieractions',
+            data: { roles: ['Admin'] },
+            loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')
           }
         ]
       }
