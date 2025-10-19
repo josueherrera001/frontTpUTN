@@ -61,11 +61,16 @@ export const routes: Routes = [
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/lots/lot-list/lot-list.component')
           },
-{
+       {
             path:'supplieractions',
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')
-          }
+          },
+          {    
+            path:'useractions',    
+            data: { roles: ['Admin'] },    
+            loadComponent: () => import('./modules/users/users-list/users-list.component')    
+          }  
         ]
       }
       ,
