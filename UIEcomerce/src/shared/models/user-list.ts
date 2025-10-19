@@ -13,7 +13,7 @@ export interface User {
   State?: number;  
     
   // Para datos del backend (GET)  
-  Accounts?: Account[];  // ← Array opcional  
+  Accounts?: Account[];  
   Addresses?: Address[];  
     
   // Para el formulario (POST/PUT)  

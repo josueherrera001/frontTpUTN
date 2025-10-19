@@ -7,6 +7,7 @@ import { User } from 'shared/models/user-list';
 import { Role } from 'shared/models/role.interface';  
 import { ToastrService } from "ngx-toastr";  
 import Swal from 'sweetalert2';  
+import { ProvincesService } from '@api/provinces.service'; 
   
 @Component({  
   selector: 'app-users-list',  
@@ -27,9 +28,9 @@ export default class UsersListComponent {
   private readonly usersSvc = inject(UsersService);  
   private readonly rolesSvc = inject(RolesService);  
   private readonly toastrSvc = inject(ToastrService);  
-  
+  private readonly provincesSvc = inject(ProvincesService);  
   users = this.usersSvc.users;  
-  
+  provinces = this.provincesSvc.provinces;  
   roles = this.rolesSvc.roles;  
   
   constructor(private readonly fb: FormBuilder) {  
@@ -45,7 +46,7 @@ export default class UsersListComponent {
       Phone: ['', [Validators.required]],  
       auth: this.fb.group({  
         UserName: ['', [Validators.required]],  
-        UserPass: ['', [Validators.required, Validators.minLength(6)]],  
+        UserPass: ['', [Validators.minLength(6)]],  
         RoleId: ['', [Validators.required]]  
       }),  
       address: this.fb.group({  
@@ -58,26 +59,84 @@ export default class UsersListComponent {
       })  
     });  
   }  
-  
-  showModalCreateUser(Id: string = '', option: String) {  
-    if (option === 'Editar') {  
-      this.msgheader = 'Editar Usuario';  
-      this.msgbody = 'Edite el usuario seleccionado para actualizar su información.';  
-  
-      this.usersSvc.getUserById(Id).subscribe((resp) => {  
-        this.frmForm.patchValue(resp);  
-      });  
+  onCountryChange(event: Event): void {  
+    const countryId = (event.target as HTMLSelectElement).value;  
+    if (countryId) {  
+      this.provincesSvc.getProvincesByCountry(countryId);  
     }  
-    if (option === 'Agregar') {  
-      this.msgheader = 'Agregar Usuario';  
-      this.msgbody = 'Cree un nuevo usuario para gestionar el acceso al sistema.';  
-      this.frmForm.reset();  
-    }  
-  
-    let dialog = document.getElementById('popup-modal-user');  
-    dialog!.classList.remove('hiddenmodal');  
-    dialog!.classList.add('showmodal');  
   }  
+onRoleChange(event: Event, user: User): void {  
+  const newRoleId = (event.target as HTMLSelectElement).value;  
+    
+  if (!user.Id || !newRoleId) {  
+    this.toastrSvc.error('Datos inválidos', 'Sistema de Gestión y de ventas');  
+    return;  
+  }  
+  
+  // Crear objeto con solo los datos necesarios para actualizar el rol  
+  const updateData = {  
+    Id: user.Id,  
+    FirstName: user.FirstName,  
+    LastName: user.LastName,  
+    Email: user.Email,  
+    Phone: user.Phone,  
+    auth: {  
+      UserName: user.Accounts?.[0]?.UserName || '',  
+      UserPass: '', // No enviar contraseña en actualización de rol  
+      RoleId: newRoleId  
+    }  
+  };  
+  
+  this.usersSvc.updateUser(user.Id, updateData).subscribe({  
+    next: (response: any) => {  
+      this.toastrSvc.success('Rol actualizado con éxito', 'Sistema de Gestión y de ventas');  
+      this.usersSvc.getUsers(); // Recargar la lista  
+    },  
+    error: (err: any) => {  
+      this.toastrSvc.error('Error al actualizar el rol', 'Sistema de Gestión y de ventas');  
+      // Revertir el select al valor anterior  
+      this.usersSvc.getUsers();  
+    }  
+  });  
+}
+  showModalCreateUser(Id: string = '', option: String) {  
+  if (option === 'Editar') {  
+    this.msgheader = 'Editar Usuario';  
+    this.msgbody = 'Edite el usuario seleccionado para actualizar su información.';  
+  
+    this.usersSvc.getUserById(Id).subscribe((resp) => {  
+      this.frmForm.patchValue({  
+        Id: resp.Id,  
+        FirstName: resp.FirstName,  
+        LastName: resp.LastName,  
+        Email: resp.Email,  
+        Phone: resp.Phone || resp.PhoneNumber,  
+        auth: {  
+          UserName: resp.Accounts?.[0]?.UserName || '',  // ← Pre-llenar usuario  
+          UserPass: '',  // ← Dejar vacío por seguridad  
+          RoleId: resp.Accounts?.[0]?.RoleId || ''  
+        },  
+        address: {  
+          Country: resp.Addresses?.[0]?.Country || '',  
+          Province: resp.Addresses?.[0]?.Province || '',  
+          Location: resp.Addresses?.[0]?.Location || '',  
+          Street: resp.Addresses?.[0]?.Street || '',  
+          Number: resp.Addresses?.[0]?.StreetNumber || '',  
+          Between: resp.Addresses?.[0]?.StreetNumber || ''  
+        }  
+      });  
+    });  
+  }  
+  if (option === 'Agregar') {  
+    this.msgheader = 'Agregar Usuario';  
+    this.msgbody = 'Cree un nuevo usuario para gestionar el acceso al sistema.';  
+    this.frmForm.reset();  
+  }  
+  
+  let dialog = document.getElementById('popup-modal-user');  
+  dialog!.classList.remove('hiddenmodal');  
+  dialog!.classList.add('showmodal');  
+}  
   
   hideModalUser() {  
     let dialog = document.getElementById('popup-modal-user');  
