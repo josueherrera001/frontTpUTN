@@ -60,7 +60,7 @@
                     <div [ngClass]="{'show-cart-animation': showCart()}" class="absolute right-0 z-30 w-48 p-2 mt-2 text-white rounded-sm bg-slate-400">
                         @for (product of cartStore.products(); track $index) {
                             <div class="flex items-center justify-between">
-                                    <span>{{ product.qty }} {{ product.title | slice:0:10 }} {{ product.subTotal || product.price | currency}}</span>
+                                    <span>{{ product.qty }} {{ product.Name | slice:0:10 }} {{ product.lots[0].SalePrice || product.lots[0].SalePrice | currency}}</span>
                             </div>
                         }
                         <hr class="my-4 border-gray-500 border-t-1" />

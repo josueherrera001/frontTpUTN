@@ -2,7 +2,7 @@ import { Component, OnInit, Signal, inject, input } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ProductsService } from '@api/products.service';
-import { Product } from 'shared/models/product.interface';
+import { Product } from 'shared/models/product';
 import { CartStore } from 'shared/store/shopping-cart.store';
 
 @Component({
@@ -23,7 +23,7 @@ export class DetailsComponent implements OnInit { // <- export nombrado
   starsArray: number[] = new Array(5).fill(0);
 
   ngOnInit(): void {
-    this.product = this.productSvc.getProductById(this.productId());
+    // this.product = this.productSvc.getProductById(this.productId());
   }
 
   onAddToCart() {
@@ -32,7 +32,8 @@ export class DetailsComponent implements OnInit { // <- export nombrado
 
   generateSVG(index: number): SafeHtml {
     let svgContent: string | null = null;
-    const rate = this.product()?.rating.rate || 0;
+    // const rate = this.product()?.rating.rate || 0;
+    const rate =5
 
     if (index + 1 <= Math.floor(rate)) {
       svgContent = `<svg fill="currentColor" stroke="currentColor" ...>...</svg>`;

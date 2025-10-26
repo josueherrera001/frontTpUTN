@@ -1,7 +1,7 @@
 import { computed, inject } from "@angular/core";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { ToastrService } from "ngx-toastr";
-import { Product } from "shared/models/product.interface";
+import { Product } from "shared/models/product";
 
 export interface CartStore{
     products:Product[];
@@ -27,7 +27,7 @@ export const CartStore = signalStore(
             const isProductInCart = products().find( (pro) =>pro.Id === product.Id);
             if (isProductInCart){
                 isProductInCart.qty++;
-                isProductInCart.subTotal = isProductInCart.qty * isProductInCart.price;
+                // isProductInCart.subTotal = isProductInCart.qty * isProductInCart.price;
                 patchState(store,{ products: [...products()] });
             }
             else{
@@ -35,17 +35,17 @@ export const CartStore = signalStore(
             }
             toastrSvc.success('Producto agregado','TP UTN');
         },
-        removeFromCart(id: number){
-            const updateProduct = products().filter( product => product.Id == id);
-            if (updateProduct[0].qty > 1){
-                updateProduct[0].qty--;
+        removeFromCart(id: string){
+            // const updateProduct = products().filter( product => product.Id == id);
+            // if (updateProduct[0].qty > 1){
+            //     updateProduct[0].qty--;
 
-                patchState(store,{ products: [...products()]});
-            }
-            else{
-                const updateProductone = products().filter( product => product.Id != id);
-                patchState(store,{ products: updateProductone });
-            }
+            //     patchState(store,{ products: [...products()]});
+            // }
+            // else{
+            //     const updateProductone = products().filter( product => product.Id != id);
+            //     patchState(store,{ products: updateProductone });
+            // }
             toastrSvc.info('Producto eliminado','TP UTN');
         },
         clearCart(){
@@ -56,7 +56,7 @@ export const CartStore = signalStore(
 );
 
 function calculateTotalAmount(products: Product[]):number{
-    return products.reduce((acc, product) => acc + (product.price * product.qty), 0)
+    return products.reduce((acc, product) => acc + (product.lots[0].SalePrice * product.qty), 0)
 }
 
 function calculateProductCount(products: Product[]):number{

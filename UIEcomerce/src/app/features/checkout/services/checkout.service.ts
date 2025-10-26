@@ -3,7 +3,7 @@ import { Injectable, inject } from "@angular/core";
 import { loadStripe } from "@stripe/stripe-js";
 import { environment } from "environments/environment.development";
 import { map } from "rxjs";
-import { Product } from "shared/models/product.interface";
+import { Product } from "shared/models/product";
 
 @Injectable({ providedIn:'root'})
 export class CheckoutService{

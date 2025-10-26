@@ -27,7 +27,7 @@ constructor(private readonly auth:AuthService) {}
     this._checkoutSvc.onProceedToPay(this.cartStore.products());
   }
 
-  removeItem(id: number): void {
+  removeItem(id: string): void {
     this.cartStore.removeFromCart(id);
   }
 

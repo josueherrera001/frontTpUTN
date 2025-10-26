@@ -28,7 +28,7 @@ export default class CategoryListComponent {
 
   public titlemsg: string = 'Lista de Categorías';
   public headeremsg: string =
-    'En esta pantalla se va a poder ver todas las categoria diosponible y manipularlas.(Modificar, eliminar y agregar sub categoria)';
+    'En esta pantalla se va a poder ver todas las categorias disponible y manipularlas.(Modificar, eliminar y agregar sub categoria)';
   public categoryname: string = '';
   public data_title: string = 'Agregar subcategoría';
 
@@ -232,6 +232,7 @@ export default class CategoryListComponent {
   updateCategory(newCategory: Category) {
     this.categorySvc.updateCategory(newCategory.Id, newCategory).subscribe({
       next: (response: any) => {
+        debugger;
         this.toastrSvc.success(
           'La categoria fue actualizada con exito',
           'Sistema de Gestion y de ventas'
@@ -242,8 +243,10 @@ export default class CategoryListComponent {
         this.frmForm.reset();
       },
       error: (err: any) => {
+        debugger;
         this.toastrSvc.error(
-          'La categoria no fue actualizada',
+          // 'La categoria no fue actualizada',
+          err.message,
           'Sistema de Gestion y de ventas'
         );
         this.frmForm.reset();
@@ -271,7 +274,8 @@ export default class CategoryListComponent {
       error: (err: any) => {
         debugger;
         this.toastrSvc.error(
-          'La sub categoria no fue creada',
+          // 'La sub categoria no fue creada',
+          err.message,
           'Sistema de Gestion y de ventas'
         );
         this.frmsubForm.reset();
@@ -298,7 +302,8 @@ export default class CategoryListComponent {
         },
         error: (err: any) => {
           this.toastrSvc.error(
-            'La subcategoria no fue actualizada',
+            // 'La subcategoria no fue actualizada',
+            err.message,
             'Sistema de Gestion y de ventas'
           );
           this.frmsubForm.reset();

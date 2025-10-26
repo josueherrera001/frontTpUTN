@@ -1,0 +1,37 @@
+/* product-table.component.css */
+:host {
+  display: block;
+}
+
+/* Animación suave para la expansión */
+tr {
+  transition: all 0.3s ease;
+}
+
+/* Mejora visual para las filas expandidas */
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.div1 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.div2 {
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.div4 {
+    grid-row-start: 2;
+}
+

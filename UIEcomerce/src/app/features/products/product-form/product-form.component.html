@@ -1,66 +1,466 @@
-<div class="h-screen p-6 bg-gray-100 flex items-center justify-center" style="height: 93vh;">  
-  <div class="container max-w-screen-lg mx-auto">  
-    <div>    
-      <div class="bg-white rounded shadow-lg p-6 md:p-8 mb-6">  
-        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">  
-          <div class="text-gray-600">  
-            <p class="font-medium text-lg">Registrar Producto</p>  
-            <p>Por favor completa todos los campos obligatorios.</p>  
-          </div>  
+<!-- product-table.component.html -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <!-- Header -->
+    <div class="bg-gradient-to-r rounded-lg from-indigo-600 to-purple-600 p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <i class="fas fa-truck text-2xl mr-3"></i>
+          <h1 class="text-2xl font-bold">Gestión de Productos y Lotes</h1>
+        </div>
+        <div class="bg-white/20 p-2 rounded-full" (click)="showModalCreate('','Agregar')"
+          data-modal-target="popup-modal-product">
+          <i class="fas fa-plus text-white"></i>
+        </div>
+      </div>
+      <p class="mt-2 text-center font-bold text-indigo-100">Lista de productos con control de inventario por lotes</p>
+    </div>
 
-          <div class="lg:col-span-2">  
-            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">  
+    <!-- Tabla -->
+    <div class="overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              <!-- Espacio para el ícono -->
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              Producto
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              Presentacion
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              Categoría
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              Proveedor
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              Stock Total
+            </th>
+            <th
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider  hover:bg-gray-100">
+              Lotes
+            </th>
+            <th scope="col"
+              class="px-6 py-3 justify-items-center text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center space-x-1">
+                <span>Acciones</span>
+              </div>
+          </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <ng-container *ngFor="let product of productss()">
+            <!-- Fila del Producto -->
+            <tr class="hover:bg-gray-50 transition-colors duration-150 cursor-pointer">
+              <td class="px-6 py-4 whitespace-nowrap" (click)="toggleProductLots(product)">
+                <div class="flex items-center justify-center">
+                  <svg [class.transform]="product.expanded" [class.rotate-90]="product.expanded"
+                    class="w-4 h-4 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ product.Name }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-500">{{ product.Presentation?.Name }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {{ product.SubCategory.Name }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900 font-semibold">
+                  {{ product.Supplier.CompanyName}}
+                  <!-- ${{ product.price.toFixed(2) }} -->
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap"
+              [class]="getStockLevelClass(getTotalstock(product.lots))" >
+                <div class="text-sm font-semibold" [class]="getStockLevelClass(20)">
+                  {{ getTotalstock(product.lots) }} unidades
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                  {{ product.lots.length }} lote(s)
+                </span>
+              </td>
 
-              <!-- Título -->
-              <div class="md:col-span-5">  
-                <label for="title">Título del Producto</label>  
-                <input type="text" id="title" [(ngModel)]="product.title" name="title"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />  
-              </div>  
+          <!-- Acciones -->
+          <td class="px-6 py-4 text-right text-sm font-medium">
+            <div class="flex justify-center space-x-2">
+              <button
+                    class="text-blue-600 hover:text-blue-900 transition-colors"
+                    data-title="Editar"  data-modal-target="popup-modal-product" (click)="showModalCreate(product.Id,'Editar')"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                  </button>
+              <button (click)="showAlert(product.Id)"  class="text-red-600 hover:text-red-900 transition-colors"
+                data-title="Eliminar">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </td>
+            </tr>
 
-              <!-- Precio -->
-              <div class="md:col-span-2">  
-                <label for="price">Precio</label>  
-                <input type="number" id="price" [(ngModel)]="product.price" name="price" step="0.01"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />  
-              </div>  
+            <!-- Fila Expandible para Lotes -->
+            <tr *ngIf="product.expanded" class="bg-gray-50 ">
+              <td colspan="7" class="px-6 py-4">
+                <div class="ml-8 border-l-2 border-gray-300 pl-4">
+                  <h4 class="text-lg font-semibold text-gray-700 mb-3">Lotes del Producto</h4>
 
-              <!-- Categoría -->
-              <div class="md:col-span-3">  
-                <label for="category">Categoría</label>  
-                <input type="text" id="category" [(ngModel)]="product.category" name="category"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />  
-              </div>  
+                  <div class="overflow-y-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                      <thead class="bg-gray-100">
+                        <tr>
+                          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            N° de Lote
+                          </th>
+                          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Cantidad
+                          </th>
+                          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Fecha de Expiración
+                          </th>
+                          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Estado
+                          </th>
+                          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Días Restantes
+                          </th>
+                          <th scope="col"
+                            class="px-6 py-3 justify-items-center text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                            <div class="flex items-center space-x-1">
+                              <span>Acciones</span>
+                            </div>
+                        </th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white divide-y divide-gray-200">
+                        <tr *ngFor="let lot of product.lots" class="hover:bg-gray-50 transition-colors duration-150">
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">
+                              {{ lot.LotCode }}
+                            </div>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="text-sm text-gray-700">
+                              {{ lot.stock }} unidades
+                            </div>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="text-sm text-gray-700">
+                              {{ lot.ExpiredDate | date:'dd/MM/yyyy' }}
+                            </div>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <span [class]="getStatusBadgeClass(lot.Status)">
+                              {{
+                              lot.Status === 'available' ? 'Disponible' :
+                              lot.Status === 'expired' ? 'Expirado' :
+                              'Stock Bajo'
+                              }}
+                            </span>
+                          </td>
+                          <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="text-sm font-medium" [class]="getDaysRemainingClass(lot.ExpiredDate!)">
+                               {{ lot.HasExpiredDate === true ? getDaysRemaining(lot.ExpiredDate!) :'No tiene fecha de vencimeinto' }}
+                            </div>
+                          </td>
 
-              <!-- Descripción -->
-              <div class="md:col-span-5">  
-                <label for="description">Descripción</label>  
-                <textarea id="description" [(ngModel)]="product.description" name="description" rows="3"
-                  class="border mt-1 rounded px-4 w-full bg-gray-50"></textarea>  
-              </div>  
+                          <!-- Acciones -->
+                          <td class="px-6 py-4 text-right text-sm font-medium">
+                            <div class="flex justify-center space-x-2">
+                              <button class="text-blue-600 hover:text-blue-900 transition-colors" data-title="Agregar lote"
+                                data-modal-target="popup-modal-product" (click)="showModalCreate(product.Id,'AgregarLot')" >
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                              </button>
+                              <button
+                                    class="text-blue-600 hover:text-blue-900 transition-colors"
+                                    data-title="Editar lote"  data-modal-target="popup-modal-product" (click)="showModalCreate(lot.Id,'EditarLot')"
+                                  >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                              </button>
+                              <button (click)="showAlert(lot.Id,'lot')"  class="text-red-600 hover:text-red-900 transition-colors"
+                                data-title="Eliminar lote">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
 
-              <!-- Imagen -->
-              <div class="md:col-span-5">  
-                <label for="image">URL de Imagen</label>  
-                <input type="text" id="image" [(ngModel)]="product.image" name="image"
-                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                  placeholder="https://..." />  
-              </div>  
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+      <div class="flex justify-between items-center">
+        <p class="text-sm text-gray-600">
+          Mostrando {{ productss().length }} productos
+        </p>
+        <div class="text-sm text-gray-600">
+          Total de lotes: {{ getTotalLots() }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-              <!-- Botones -->
-              <div class="md:col-span-5 text-right">  
-                <button type="button" (click)="resetForm()"
-                  class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-4 rounded mr-2">Cancelar</button>
-                <button type="button" (click)="submit()"
-                  class="bg-primary-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Registrar Producto
-                </button>  
-              </div>  
+<!-- Modal -->
+<div id="popup-modal-product" tabindex="-1"
+  class="bg-black bg-opacity-50 w-screen h-screen hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center md:inset-0 max-h-full">
+  <div class="relative p-4 w-full max-h-full items-center justify-center flex">
+    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700 lg:w-[43rem] md:w-3/4 sm:w-full">
+      <div class="p-4 md:p-5 text-center">
+        <hr>
+        <form action="" [formGroup]="frmForm" class="form" (ngSubmit)="onSubmit()">
+          <div class="bg-indigo-600 p-6 text-white justify-items-center mb-3">
+            <div class="flex items-center">
+              <i class="fas fa-truck text-2xl mr-3"></i>
+              <h1 class="text-2xl font-bold">{{ msgheader }}</h1>
+            </div>
+            <p class="mt-2 text-indigo-100">{{ msgbody }}</p>
+          </div>
+          <input type="text" name="Id" hidden readonly id="Id" formControlName="Id">
+          <fieldset *ngIf="istLotEdit" class="border border-gray-300 rounded-lg p-6 mb-3 bg-gray-50 shadow-md">
+            <legend id="toggle-button"
+              class="text-xl font-bold text-gray-700 px-3 py-1 bg-white rounded-md -ml-3 float-left absolute"
+              (click)="toggleButton()">
+              Productos
+              <i class="fas fa-chevron-down"></i>
+            </legend>
 
-            </div>  
-          </div>  
-        </div>  
-      </div>  
-    </div>  
-  </div>  
+            <div id="inputs-container" class="lg:col-span-2 max-h-96 overflow-y-auto max-sm:max-h-48">
+              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                <div class="md:col-span-5 mt-8">
+                  <label class="flex" for="Name">Nombre <p class="text-red-500">*</p></label>
+                  <input type="text" name="Name" id="Name" formControlName="Name"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Nombre del producto" />
+                  <div *ngIf="frmForm.get('Name')?.touched && frmForm.get('Name')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('Name')?.errors?.['required']">Nombre del producto requerido</div>
+                  </div>
+                </div>
+                <div class="md:col-span-2">
+                  <label class="flex" for="SubCategoryName">Sub categoria <p class="text-red-500">*</p></label>
+                  <input type="text" name="SubCategoryName" id="SubCategoryName" formControlName="SubCategoryName"
+                    [formControl]="searchSubcategoryControl" placeholder="Seleccion la sub categoria"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" (input)="onSearchSubCategory()" />
+                  <input type="text" name="SubCategoryId" id="SubCategoryId" formControlName="SubCategoryId"
+                    class="h-10 border mt-1 rounded px-4 hidden w-full bg-gray-50" />
+                  <div *ngIf="suggestionSubCategories.length > 0"
+                    class="absolute z-10 w-[42%] mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+                    <div *ngFor="let subcate of suggestionSubCategories" class="p-3  hover:bg-gray-50 cursor-pointer"
+                      (click)="selectSubCategory(subcate)">
+                      {{ subcate.Name }}
+                    </div>
+                  </div>
+                  <div *ngIf="frmForm.get('SubCategoryId')?.touched && frmForm.get('SubCategoryId')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('SubCategoryId')?.errors?.['required']">Subcategoria requerida.</div>
+                  </div>
+                </div>
+
+                <div class="md:col-span-3 mb-2">
+                  <label class="flex" for="PresentationName">Presentación <p class="text-red-500">*</p></label>
+                  <input name="PresentationName" id="PresentationName" placeholder="Seleccione la presentación"
+                    [formControl]="searchPresentationControl" formControlName="PresentationName"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                  <input type="text" name="PresentationId" id="PresentationId" formControlName="PresentationId"
+                    class="h-10 border mt-1 rounded px-4 hidden w-full bg-gray-50" (input)="onSearchPresentation()" />
+                  <div *ngIf="suggestionPresentations.length > 0"
+                    class="absolute z-10 w-[51%] mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+                    <div *ngFor="let presentation of suggestionPresentations"
+                      class="p-3  hover:bg-gray-50 cursor-pointer" (click)="selectPresentation(presentation)">
+                      {{ presentation.Name }}
+                    </div>
+                  </div>
+                  <div *ngIf="frmForm.get('PresentationId')?.touched && frmForm.get('PresentationId')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('PresentationId')?.errors?.['required']">Presentación requerida.</div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Supplier -->
+              <div class="md:col-span-2">
+                <label class="flex" for="CompanyName">Proveedor <p class="text-red-500">*</p></label>
+                <input type="text" name="CompanyName" formControlName="CompanyName" [formControl]="searchControl"
+                  class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Seleccion el proveedor..."
+                  (input)="onSearch()">
+                <input type="text" name="SupplierId" id="SupplierId" formControlName="SupplierId"
+                  class="h-10 border mt-1 rounded px-4 hidden w-full bg-gray-50" />
+                <div *ngIf="suggestions.length > 0"
+                  class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+                  <div *ngFor="let suggestion of suggestions" class="p-3  hover:bg-gray-50 cursor-pointer"
+                    (click)="selectSupplier(suggestion)">
+                    {{ suggestion.CompanyName }}
+                  </div>
+                </div>
+                <div *ngIf="frmForm.get('SupplierId')?.touched && frmForm.get('SupplierId')?.invalid"
+                  class="text-lg text-red-700 p-2 mt-1">
+                  <div *ngIf="frmForm.get('SupplierId')?.errors?.['required']">Proveedor requerido</div>
+                </div>
+              </div>
+
+
+              <!-- Photo -->
+              <div class="md:col-span-2 mt-4">
+                <label class="flex" for="Email">Image del producto</label>
+
+                <div class="flex items-center justify-center w-full">
+                  <!-- Componente de Upload -->
+                  <app-cloudinary-upload
+                  (imagesUploaded)="onUploaded($event)"
+                  [uploadedImages] ="imgurl"
+                  >
+                  </app-cloudinary-upload>
+                </div>
+
+              </div>
+
+              <!-- Description -->
+              <div class="md:col-span-3">
+                <label class="flex" for="Description">Descripcion</label>
+                <textarea type="text" name="Description" id="Name" formControlName="Description"
+                  class="resize-none border mt-1 rounded px-4 w-full h-36 bg-gray-50" value=""
+                  placeholder="Ingresa la descripcion">
+              </textarea>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Lot -->
+
+          <fieldset *ngIf="istProductEdit" class="border border-gray-300 rounded-lg p-6 mb-3 bg-gray-50 shadow-md">
+            <legend id="toggle-buttonlot"
+              class="text-xl font-bold text-gray-700 px-3 py-1 bg-white rounded-md -ml-3 float-left absolute"
+              (click)="toggleButtonLot()">
+              Lotes
+              <i class="fas fa-chevron-down"></i>
+            </legend>
+
+            <div id="inputs-containerlot" formGroupName="lot"
+              class="lg:col-span-2 max-h-96 overflow-y-auto hidden max-sm:max-h-48">
+              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+
+                <div class="md:col-span-2 mt-9">
+                  <label class="flex" for="LotCode">Lote del producdo <p class="text-red-500">*</p></label>
+                  <input type="text" name="LotCode" id="Name" formControlName="LotCode"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Lote del producdo" />
+                  <div *ngIf="frmForm.get('LotCode')?.touched && frmForm.get('LotCode')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('LotCode')?.errors?.['required']">Codigo de lote del producto requerido
+                    </div>
+                  </div>
+                </div>
+
+                <div class="md:col-span-3 mb-2 mt-9">
+                  <label class="flex" for="ProductCode">Codigo del producto <p class="text-red-500">*</p></label>
+                  <input name="ProductCode" id="ProductCode" placeholder="Ingresa el codigo del producto"
+                    formControlName="ProductCode" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
+
+                  <div *ngIf="frmForm.get('ProductCode')?.touched && frmForm.get('ProductCode')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('ProductCode')?.errors?.['required']">Codigo del prodducto requerido.</div>
+                  </div>
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="flex" for="PurchasePrice">Precio de compra <p class="text-red-500">*</p></label>
+                  <input type="text" name="PurchasePrice" id="Name" formControlName="PurchasePrice"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Precio de compra" />
+                  <div *ngIf="frmForm.get('PurchasePrice')?.touched && frmForm.get('PurchasePrice')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('PurchasePrice')?.errors?.['required']">Precio de compra requerido</div>
+                  </div>
+                </div>
+
+                <div class="md:col-span-2 mb-2">
+                  <label class="flex" for="SalePrice">Precio de venta <p class="text-red-500">*</p></label>
+                  <input name="SalePrice" id="SalePrice" placeholder="Precio de venta" formControlName="SalePrice"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
+
+                  <div *ngIf="frmForm.get('SalePrice')?.touched && frmForm.get('SalePrice')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('SalePrice')?.errors?.['required']">Precio de venta requerido.</div>
+                  </div>
+                </div>
+                <div class="md:col-span-1 mb-2">
+                  <label class="flex" for="ProductCode">Stock <p class="text-red-500">*</p></label>
+                  <input name="stock" id="stock" placeholder="Sotck" formControlName="stock"
+                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
+
+                  <div *ngIf="frmForm.get('stock')?.touched && frmForm.get('stock')?.invalid"
+                    class="text-lg text-red-700 p-2 mt-1">
+                    <div *ngIf="frmForm.get('stock')?.errors?.['required']">Stock requerido.</div>
+                  </div>
+                </div>
+
+                 <div class="md:col-span-3 mb-2">
+                  <input type="checkbox" formControlName="HasExpiredDate" id="myCheckbox" class="form-checkbox text-green-500 rounded-md border-gray-300 focus:ring-green-500 focus:ring-offset-0 transition duration-150 ease-in-out">
+                  <label for="myCheckbox" class="ml-2 text-gray-700">¿Tiene fecha de vencimiento?</label>
+                </div>
+                 <div class="md:col-span-2 mb-2">
+                    <app-calendardate
+                      label="Fecha de vencimiento"
+                      placeholder="Selecciona tu fecha de vencimiento"
+                      [required]="true"
+                      (dateChange)="onDateChange($event)"
+                    ></app-calendardate>
+                </div>
+
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Botones -->
+          <div
+            class="justify-end p-4 border-t border-gray-200 rounded-b-lg flex items-center space-x-2 dark:border-gray-600">
+            <button (click)="hideModal()" data-modal-hide="popup-modal-product" type="button"
+              class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+              Cancelar
+            </button>
+            <button data-modal-hide="popup-modal-product" type="submit"
+              class="text-white bg-purple-600 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

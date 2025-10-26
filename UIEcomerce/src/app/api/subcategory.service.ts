@@ -13,11 +13,20 @@ export class SubCategoriesService {
     private readonly _injector = inject(EnvironmentInjector);
 
     constructor() {
-        // this.getSubCategories();
+        this.getSubCategoryList();
+    }
+
+    public getSubCategoryList(): void {
+      this._http.get<SubCategory[]>(`${this._endpoint}subcategories/sub-category/suges`)
+          .pipe(
+              tap((subcategories: SubCategory[]) => this.subCategories.set(subcategories))
+          )
+          .subscribe();
     }
 
     // GET SUBCATEGORIES LIST
     public getSubCategories(CategoryId: string): Observable<SubCategory[]> {
+      debugger;
         return this._http.get<SubCategory[]>(`${this._endpoint}subcategories/sub-category/${CategoryId}`);
     }
 

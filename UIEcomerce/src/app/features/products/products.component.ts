@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from './card/card.component';
 import { ProductsService } from '@api/products.service';
-import { Product } from 'shared/models/product.interface';
+import { Product } from 'shared/models/product';
 import { CartStore } from 'shared/store/shopping-cart.store';
 
 @Component({

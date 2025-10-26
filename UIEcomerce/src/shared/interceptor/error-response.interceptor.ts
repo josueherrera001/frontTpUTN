@@ -9,8 +9,8 @@ export const ErrorResponseInterceptor:HttpInterceptorFn = (
 
 function handlerErrorResponse(error: HttpErrorResponse):ReturnType<typeof throwError>{
     const errorResponse = {
-      error: error.error.error.code,
-      message: error.error.error.message
+      error: error.error!= undefined ? error.error.error : error.error.error.code,
+      message: error.error!= undefined ? error.error.message :error.error.error.message
     };
       debugger;
     return throwError( () => errorResponse);

@@ -14,7 +14,7 @@ export const routes: Routes = [
       {
         path:'products',
         component:HeaderComponent,
-        canActivate:[authGuardGuard],
+        // canActivate:[authGuardGuard],
         children:
         [
           { path: '',  redirectTo: 'products',  pathMatch: 'full'},
