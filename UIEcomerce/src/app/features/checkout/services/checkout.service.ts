@@ -3,7 +3,7 @@ import { Injectable, inject } from "@angular/core";
 import { loadStripe } from "@stripe/stripe-js";
 import { environment } from "environments/environment.development";
 import { map } from "rxjs";
-import { Product } from "shared/models/product";
+import { Product } from "shared/models/product.interface";
 
 @Injectable({ providedIn:'root'})
 export class CheckoutService{
@@ -12,6 +12,7 @@ export class CheckoutService{
     private readonly _url = environment.serverURL;
 
     onProceedToPay(products:Product[]){
+      debugger;
         return this._http.post(`${this._url}/checkout`,{items:products})
             .pipe(
                 map( async( res: any) =>{

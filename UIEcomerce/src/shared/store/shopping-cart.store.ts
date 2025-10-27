@@ -24,13 +24,15 @@ export const CartStore = signalStore(
     })),
     withMethods( ({products, ...store}, toastrSvc =inject(ToastrService)) => ({
         addToCart(product:Product){
+          debugger;
             const isProductInCart = products().find( (pro) =>pro.Id === product.Id);
             if (isProductInCart){
                 isProductInCart.qty++;
-                // isProductInCart.subTotal = isProductInCart.qty * isProductInCart.price;
+                isProductInCart.subTotal = isProductInCart.qty * isProductInCart.lots[0].SalePrice;
                 patchState(store,{ products: [...products()] });
             }
             else{
+              product.qty = 1;
             patchState(store,{ products: [...products(),product] });
             }
             toastrSvc.success('Producto agregado','TP UTN');
@@ -56,9 +58,11 @@ export const CartStore = signalStore(
 );
 
 function calculateTotalAmount(products: Product[]):number{
+  debugger
     return products.reduce((acc, product) => acc + (product.lots[0].SalePrice * product.qty), 0)
 }
 
 function calculateProductCount(products: Product[]):number{
+  debugger
     return products.reduce((acc, product) => acc + product.qty, 0)
 }

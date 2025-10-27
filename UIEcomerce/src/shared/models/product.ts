@@ -14,6 +14,7 @@ export interface Product{
     PublicIdUrl:string;
     expanded:boolean;
     qty:number;
+    subTotal?:number,
 
     lots:Lot[];
     Supplier:Supplier;
