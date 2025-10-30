@@ -15,16 +15,21 @@ const YOUR_DOMAIN = 'http://localhost:4242';
 app.post('/checkout', async (req, res) => {
 
   const items = req.body.items.map(( item ) =>{
-    return{
-     price_data:{
-      currency:'usd',
-      product_data:{
-        name: item.title,
-        images:[item.image]
+    try {
+       debugger;
+      return{
+      price_data:{
+        currency:'usd',
+        product_data:{
+          name: item.title,
+          images:[item.image]
+        },
+        unit_amount: item.price *100,
       },
-      unit_amount: item.price *100,
-     },
-     quantity: item.qty
+      quantity: item.qty
+    }
+    } catch (error) {
+      console.error( error)
     }
   })
   const session = await stripe.checkout.sessions.create({

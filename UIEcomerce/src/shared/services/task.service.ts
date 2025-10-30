@@ -5,6 +5,7 @@ import { catchError, map, mapTo, Observable, of, tap } from 'rxjs';
 import { Auth } from 'shared/models/auth';
 import { Tokens } from 'shared/models/token';
 import { DecoderTokenService } from './decoder.token.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,14 @@ export class TaskService {
 
     private readonly JWT_TOKEN = 'JWT_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  private readonly RoleUser = 'RoleUser';
+  private readonly RoleUser = 'ROLE';
   private readonly ROLE = 'ROLE';
 
   private email:any;
   private readonly auth!: Auth;
   private loggedUser!: string;
 
-  constructor() {
+  constructor(private router: Router) {
    }
 
   Authentication(modal: Auth): Observable<boolean>{
@@ -44,21 +45,14 @@ export class TaskService {
     );
   }
 
-  logout(): Observable<boolean>{
-    this.auth.UserName = this.getJwtToken()!;
-    const url = `${ this._endpoint }/logout`;
-
-     let headers = new HttpHeaders()
-          .set('cleantoken', this.getJwtToken()!)
-          .set('Content-Type', 'application/json');
-
-    return this._http.post<any>(url, null, { headers }).pipe(
-      tap(() => this.doLogoutUser()),
-      mapTo(true),
-      catchError(error => {
-        this.doLogoutUser()
-        return of(true)
-      }));
+  logout(): void{
+    this._http.post(`${ this._endpoint }/logout`, {}).subscribe( ( resp:any ) =>{
+      debugger;
+      if(resp.success){
+          this.removeTokens();
+           this.router.navigate(['/login']);
+      }
+    });
   }
   refreshToken(): Observable<boolean>{
 
@@ -108,6 +102,7 @@ export class TaskService {
   }
 
   public doLogoutUser() {
+    debugger;
     this.loggedUser = '';
     this.removeTokens();
   }
@@ -115,7 +110,7 @@ export class TaskService {
   private storeTokens(tokens: Tokens) {
     localStorage.setItem(this.JWT_TOKEN, tokens.jwt);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshToken);
-    localStorage.setItem(this.ROLE, tokens.role);
+    localStorage.setItem(this.ROLE, tokens.Role);
   }
 
 }

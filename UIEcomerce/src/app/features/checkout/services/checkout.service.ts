@@ -16,12 +16,14 @@ export class CheckoutService{
         return this._http.post(`${this._url}/checkout`,{items:products})
             .pipe(
                 map( async( res: any) =>{
+                      debugger;
                     const stripe = await loadStripe(environment.stripeApiKey);
                     stripe?.redirectToCheckout({ sessionId: res.id});
                 })
             ).subscribe(
                 {
                     error: (err) => {
+                      debugger;
                       console.error(err)
                     }
                 }

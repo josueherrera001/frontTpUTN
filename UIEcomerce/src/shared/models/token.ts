@@ -1,6 +1,7 @@
 
 export interface Tokens {
+  Id:string,
   jwt: string;
   refreshToken: string;
-  role: string;
+  Role: string;
 }

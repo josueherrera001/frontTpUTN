@@ -1,0 +1,105 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+  <div class="bg-white shadow-lg rounded-2xl w-full max-w-3xl p-6">
+    <h2 class="text-2xl font-bold text-gray-700 mb-6 text-center">
+      Asignar Permisos a Usuario
+    </h2>
+
+    <!-- Selección de usuario -->
+    <div class="mb-6">
+      <label for="usuario" class="block text-sm font-medium text-gray-600 mb-1">
+        Seleccionar Usuario
+      </label>
+      <select
+        id="usuario"
+        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="">-- Selecciona un usuario --</option>
+        <!-- <option>Administrador</option>
+        <option>Vendedor</option>
+        <option>Supervisor</option> -->
+         @for (opcion of account; track opcion.Id) {
+          <option [value]="opcion.Id">{{ opcion.UserName }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Permisos -->
+    <div class="space-y-6">
+      <!-- Módulo Ventas -->
+      <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-semibold text-gray-700">Módulo Ventas</h3>
+          <label class="text-sm text-blue-600 cursor-pointer">
+            <input type="checkbox" class="accent-blue-600 mr-1" id="ventas-todo" /> Seleccionar todo
+          </label>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Crear Venta</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Ver Ventas</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Anular Venta</label>
+        </div>
+      </div>
+
+      <!-- Módulo Productos -->
+      <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-semibold text-gray-700">Módulo Productos</h3>
+          <label class="text-sm text-blue-600 cursor-pointer">
+            <input type="checkbox" class="accent-blue-600 mr-1" id="productos-todo" /> Seleccionar todo
+          </label>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Agregar Producto</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Editar Producto</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Eliminar Producto</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Ver Inventario</label>
+        </div>
+      </div>
+
+      <!-- Módulo Usuarios -->
+      <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-semibold text-gray-700">Módulo Usuarios</h3>
+          <label class="text-sm text-blue-600 cursor-pointer">
+            <input type="checkbox" class="accent-blue-600 mr-1" id="usuarios-todo" /> Seleccionar todo
+          </label>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Crear Usuario</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Editar Usuario</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Eliminar Usuario</label>
+          <label><input type="checkbox" class="accent-blue-600 mr-2" />Asignar Permisos</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-3 mt-8">
+      <button
+        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+      >
+        Cancelar
+      </button>
+      <button
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Guardar Cambios
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Script para "Seleccionar todo" -->
+<script>
+  const grupos = ['ventas', 'productos', 'usuarios'];
+  grupos.forEach((g) => {
+    const selectAll = document.getElementById(`${g}-todo`);
+    selectAll?.addEventListener('change', (e) => {
+      const checkboxes = selectAll
+        .closest('div')
+        .parentElement.querySelectorAll('input[type="checkbox"]:not(#' + g + '-todo)');
+      checkboxes.forEach((cb) => (cb.checked = e.target.checked));
+    });
+  });
+</script>
+

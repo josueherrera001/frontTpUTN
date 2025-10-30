@@ -4,7 +4,7 @@ export interface Menu {
     Id: string;
     Name: string;
     Url: string;
-  HasSubMenu: boolean;
+    HasSubMenu: boolean;
     Description: string;
 
     SubMenu: Submenu[];

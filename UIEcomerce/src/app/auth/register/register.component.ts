@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from 'shared/models/user';
 import { RegisterService } from 'shared/services/register.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export default class RegisterComponent {
   registerForm!: FormGroup;
+  private readonly toastrSvc = inject(ToastrService);
 
   constructor(
     private readonly registerService: RegisterService,
@@ -71,14 +73,24 @@ export default class RegisterComponent {
         // Here you can add the logic to send the data to the server
         this.registerService.post(user).subscribe(
           (response) => {
+        this.toastrSvc.success(
+          'El usuario fue creada con exito',
+          'Sistema de Gestion y de ventas'
+        );
             this.router.navigate(['/products']);
           },
           (error:HttpErrorResponse) => {
-            console.error('Registration error', error );
+            this.toastrSvc.success(
+              error.message,
+              'Sistema de Gestion y de ventas'
+            );
           }
         );
       } catch (error: any) {
-          console.error('Error during registration', error);
+        this.toastrSvc.success(
+          error.message,
+          'Sistema de Gestion y de ventas'
+        );
       }
 
     } else {

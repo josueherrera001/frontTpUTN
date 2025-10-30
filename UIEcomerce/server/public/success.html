@@ -1,15 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Thanks for your order!</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Gracias! - MiTienda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .checkmark-animation {
+            animation: checkmark 0.6s ease-out;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-animation > * {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .stagger-animation > *:nth-child(1) { animation-delay: 0.1s; }
+        .stagger-animation > *:nth-child(2) { animation-delay: 0.2s; }
+        .stagger-animation > *:nth-child(3) { animation-delay: 0.3s; }
+        .stagger-animation > *:nth-child(4) { animation-delay: 0.4s; }
+        .stagger-animation > *:nth-child(5) { animation-delay: 0.5s; }
+    </style>
 </head>
-<body>
-  <section>
-    <p>
-      We appreciate your business! If you have any questions, please email
-      <a href="mailto:orders@example.com">orders@example.com</a>.
-    </p>
-  </section>
+<body class="bg-gradient-to-br from-green-400 via-blue-400 to-purple-500 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full">
+        <!-- Tarjeta principal con animaciones -->
+        <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 text-center transform transition-all duration-500 hover:scale-105">
+            <!-- Icono animado -->
+            <div class="relative mb-8">
+                <div class="w-24 h-24 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto float-animation pulse-glow">
+                    <i class="fas fa-check text-white text-4xl checkmark-animation"></i>
+                </div>
+            </div>
+
+            <!-- Contenido con animación escalonada -->
+            <div class="stagger-animation">
+                <!-- Título -->
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                    ¡Compra Confirmada!
+                </h1>
+
+                <!-- Mensaje -->
+                <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                    Gracias por confiar en nosotros. Tu pedido está siendo procesado y pronto estará en camino.
+                </p>
+
+                <!-- Tarjeta de resumen -->
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 mb-8 border border-green-200 transform transition-all duration-300 hover:shadow-lg">
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Orden</p>
+                            <p class="text-lg font-bold text-gray-900">#123456</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Total</p>
+                            <p class="text-lg font-bold text-green-600">$450.00</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Items</p>
+                            <p class="text-lg font-bold text-gray-900">2</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Envío</p>
+                            <p class="text-lg font-bold text-blue-600">3-5 días</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progreso de envío simplificado -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-green-600">Preparando tu pedido</span>
+                        <span class="text-sm text-gray-500">70%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full transition-all duration-1000" style="width: 70%"></div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="trackOrder()" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fas fa-shipping-fast mr-3"></i>
+                        Rastrear Pedido
+                    </button>
+
+                    <a href="/" class="flex-1 border-2 border-green-500 text-green-600 py-4 px-6 rounded-xl font-semibold hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                        <i class="fas fa-home mr-3"></i>
+                        Volver al Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="text-center mt-8 text-white/90 stagger-animation">
+            <p class="text-lg mb-2">
+                <i class="fas fa-envelope mr-2"></i>
+                Enviamos la confirmación a <strong>cliente@email.com</strong>
+            </p>
+            <p class="text-sm">
+                ¿Preguntas? <a href="mailto:soporte@mitienda.com" class="underline hover:text-white transition-colors">Contáctanos</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Elementos decorativos flotantes -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-10 left-10 w-6 h-6 bg-yellow-400 rounded-full opacity-20 float-animation" style="animation-delay: 0s;"></div>
+        <div class="absolute top-20 right-20 w-8 h-8 bg-pink-400 rounded-full opacity-20 float-animation" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 left-20 w-10 h-10 bg-blue-400 rounded-full opacity-20 float-animation" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-10 right-10 w-6 h-6 bg-green-400 rounded-full opacity-20 float-animation" style="animation-delay: 1.5s;"></div>
+    </div>
+
+    <script>
+        function trackOrder() {
+            // Aquí iría la lógica para rastrear el pedido
+            alert('Redirigiendo al sistema de rastreo...');
+        }
+
+        // Efecto de tipo máquina de escribir para el título
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Iniciar animaciones cuando la página cargue
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.querySelector('h1');
+            const originalText = title.textContent;
+            typeWriter(title, originalText, 80);
+        });
+    </script>
 </body>
 </html>

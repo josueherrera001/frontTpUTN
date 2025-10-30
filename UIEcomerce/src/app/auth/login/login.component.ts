@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Tokens } from 'shared/models/token';
+import { AuthService } from 'shared/services/auth.service';
+import { DecoderTokenService } from 'shared/services/decoder.token.service';
 import { TaskService } from 'shared/services/task.service';
+import { UserMenuService } from 'shared/services/user.menu.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +18,7 @@ import { TaskService } from 'shared/services/task.service';
 export default class LoginComponent {
 
   authForm!: FormGroup;
+
   constructor(
     private readonly taskService: TaskService,
     private readonly router: Router,
@@ -33,9 +38,8 @@ export default class LoginComponent {
       debugger;
       this.taskService.Authentication(this.authForm.value).subscribe(
         (data:any) =>{
-      debugger;
           if(data){
-            this.router.navigate(['/products']);
+              this.router.navigate(['/products']);
           }
           else{
             alert('Usuario y/o contraseña incorrecto')

@@ -47,7 +47,7 @@ export const routes: Routes = [
           },
           {
             path:'checkout',
-            canActivate: [authGuardGuard],
+            // canActivate: [authGuardGuard],
             loadComponent: () => import('./features/checkout/checkout.component')
           },
           {
@@ -66,11 +66,16 @@ export const routes: Routes = [
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')
           },
-          {    
-            path:'useractions',    
-            data: { roles: ['Admin'] },    
-            loadComponent: () => import('./modules/users/users-list/users-list.component')    
-          }  
+          {
+            path:'useractions',
+            data: { roles: ['Admin'] },
+            loadComponent: () => import('./modules/users/users-list/users-list.component')
+          },
+          {
+            path:'assignmenu',
+            data: { roles: ['Admin'] },
+            loadComponent: () => import('./modules/assignuser/assignuser.component').then( u => u.AssignuserComponent)
+          }
         ]
       }
       ,

@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Menu } from '../models/menu';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment.development';
 import { map, tap } from 'rxjs';
+import { Menu } from 'shared/models/Authmenues/menu';
 
 @Injectable({
   providedIn: 'root'

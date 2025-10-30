@@ -1,5 +1,4 @@
 import { EnvironmentInjector, inject, Injectable, runInInjectionContext, signal } from '@angular/core';
-import { Menu } from '../models/menu';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'environments/environment.development';
 import { catchError, map, mapTo, Observable, of, tap, throwError } from 'rxjs';
