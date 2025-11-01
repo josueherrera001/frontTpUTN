@@ -49,8 +49,8 @@ export class HeaderComponent implements OnInit {
   getMenu(AccountId: string){
     this.usermemnusvc.getUserWithMenus(AccountId).subscribe( ( menu:any ) =>{
      debugger;
-     console.log(menu.AccountMenu);
      menu[0].AccountMenu.forEach((element:any) => {
+     console.log(element.Menu);
       this.menus$.push(element.Menu);
      });
     });
