@@ -35,12 +35,8 @@ export class UsersService {
   
     // PUT: update USER  
     public updateUser(id: string, user: any) {  
-        console.log('=== DEBUG UsersService.updateUser ===');  
-        console.log('id parameter:', id);  
-        console.log('user body:', user);  
-        console.log('URL completa:', `${this._endpoint}users/${id}`);  
-        return this._http.put<User>(`${this._endpoint}users/${id}`, user);
-    } 
+        return this._http.put<User>(`${this._endpoint}users/${id}`, user);  
+    }  
   
     // DELETE: delete USER  
     public deleteUser(id: string) {  
