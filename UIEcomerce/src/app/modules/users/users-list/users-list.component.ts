@@ -38,27 +38,21 @@ export default class UsersListComponent {
   }  
   
   private createForm(): void {  
-    this.frmForm = this.fb.group({  
-      Id: [''],  
-      FirstName: ['', [Validators.required]],  
-      LastName: ['', [Validators.required]],  
-      Email: ['', [Validators.required, Validators.email]],  
-      Phone: ['', [Validators.required]],  
-      auth: this.fb.group({  
-        UserName: ['', [Validators.required]],  
-        UserPass: ['', [Validators.minLength(6)]],  
-        RoleId: ['', [Validators.required]]  
-      }),  
-      address: this.fb.group({  
-        Country: ['', [Validators.required]],  
-        Province: ['', [Validators.required]],  
-        Location: ['', [Validators.required]],  
-        Street: ['', [Validators.required]],  
-        Number: ['', [Validators.required]],  
-        Between: ['']  
-      })  
-    });  
-  }  
+  this.frmForm = this.fb.group({  
+    Id: [''],  
+    FirstName: ['', [Validators.required]],  
+    LastName: ['', [Validators.required]],  
+    Phone: ['', [Validators.required]],  
+    address: this.fb.group({  
+      Country: ['', [Validators.required]],  
+      Province: ['', [Validators.required]],  
+      Location: ['', [Validators.required]],  
+      Street: ['', [Validators.required]],  
+      Number: ['', [Validators.required]],
+      Between: ['']
+    })  
+  });  
+} 
   onCountryChange(event: Event): void {  
     const countryId = (event.target as HTMLSelectElement).value;  
     if (countryId) {  
@@ -66,14 +60,18 @@ export default class UsersListComponent {
     }  
   }  
 onRoleChange(event: Event, user: User): void {  
-  const newRoleId = (event.target as HTMLSelectElement).value;  
+   const newRoleId = (event.target as HTMLSelectElement).value;  
+    
+  console.log('User object:', user);  
+  console.log('User ID:', user.Id);  
+  console.log('New Role ID:', newRoleId);   
     
   if (!user.Id || !newRoleId) {  
     this.toastrSvc.error('Datos inválidos', 'Sistema de Gestión y de ventas');  
     return;  
   }  
   
-  // Crear objeto con solo los datos necesarios para actualizar el rol  
+ 
   const updateData = {  
     Id: user.Id,  
     FirstName: user.FirstName,  
@@ -82,7 +80,7 @@ onRoleChange(event: Event, user: User): void {
     Phone: user.Phone,  
     auth: {  
       UserName: user.Accounts?.[0]?.UserName || '',  
-      UserPass: '', // No enviar contraseña en actualización de rol  
+      UserPass: '', 
       RoleId: newRoleId  
     }  
   };  
@@ -90,54 +88,52 @@ onRoleChange(event: Event, user: User): void {
   this.usersSvc.updateUser(user.Id, updateData).subscribe({  
     next: (response: any) => {  
       this.toastrSvc.success('Rol actualizado con éxito', 'Sistema de Gestión y de ventas');  
-      this.usersSvc.getUsers(); // Recargar la lista  
+      this.usersSvc.getUsers(); 
     },  
     error: (err: any) => {  
       this.toastrSvc.error('Error al actualizar el rol', 'Sistema de Gestión y de ventas');  
-      // Revertir el select al valor anterior  
       this.usersSvc.getUsers();  
     }  
   });  
 }
-  showModalCreateUser(Id: string = '', option: String) {  
-  if (option === 'Editar') {  
-    this.msgheader = 'Editar Usuario';  
-    this.msgbody = 'Edite el usuario seleccionado para actualizar su información.';  
-  
-    this.usersSvc.getUserById(Id).subscribe((resp) => {  
-      this.frmForm.patchValue({  
-        Id: resp.Id,  
-        FirstName: resp.FirstName,  
-        LastName: resp.LastName,  
-        Email: resp.Email,  
-        Phone: resp.Phone || resp.PhoneNumber,  
-        auth: {  
-          UserName: resp.Accounts?.[0]?.UserName || '',  // ← Pre-llenar usuario  
-          UserPass: '',  // ← Dejar vacío por seguridad  
-          RoleId: resp.Accounts?.[0]?.RoleId || ''  
-        },  
-        address: {  
-          Country: resp.Addresses?.[0]?.Country || '',  
-          Province: resp.Addresses?.[0]?.Province || '',  
-          Location: resp.Addresses?.[0]?.Location || '',  
-          Street: resp.Addresses?.[0]?.Street || '',  
-          Number: resp.Addresses?.[0]?.StreetNumber || '',  
-          Between: resp.Addresses?.[0]?.StreetNumber || ''  
-        }  
-      });  
-    });  
-  }  
-  if (option === 'Agregar') {  
-    this.msgheader = 'Agregar Usuario';  
-    this.msgbody = 'Cree un nuevo usuario para gestionar el acceso al sistema.';  
-    this.frmForm.reset();  
-  }  
-  
-  let dialog = document.getElementById('popup-modal-user');  
-  dialog!.classList.remove('hiddenmodal');  
-  dialog!.classList.add('showmodal');  
-}  
-  
+showModalCreateUser(Id: string = '', option: String) {    
+  if (option === 'Editar') {    
+    this.msgheader = 'Editar Usuario';    
+    this.msgbody = 'Edite los datos del usuario seleccionado.';    
+    
+    this.usersSvc.getUserById(Id).subscribe((resp) => {    
+      this.frmForm.patchValue({    
+        Id: resp.Id,    
+        FirstName: resp.FirstName,    
+        LastName: resp.LastName,    
+        Phone: resp.Phone || resp.PhoneNumber,    
+        address: {    
+          Country: resp.Addresses?.[0]?.Country || '',    
+          Province: resp.Addresses?.[0]?.Province || '',    
+          Location: resp.Addresses?.[0]?.Location || '',    
+          Street: resp.Addresses?.[0]?.Street || '',     
+          Number: resp.Addresses?.[0]?.Number || resp.Addresses?.[0]?.StreetNumber || '',  
+          Between: resp.Addresses?.[0]?.Between || resp.Addresses?.[0]?.BetweenStreet || '' 
+       
+        }    
+      });    
+    });    
+  }     
+    if (option === 'Agregar') {    
+      this.msgheader = 'Agregar Usuario';    
+      this.msgbody = 'Cree un nuevo usuario para gestionar el acceso al sistema.';    
+      this.frmForm.reset();    
+    }    
+      
+    let dialog = document.getElementById('popup-modal-user');    
+    dialog!.classList.remove('hiddenmodal');    
+    dialog!.classList.add('showmodal');    
+  } 
+  showUserActions(userId: string): void {  
+  // Aquí logica del nuevo boton 
+  console.log('Mostrar acciones para usuario:', userId);  
+  this.toastrSvc.info('Funcionalidad de acciones en desarrollo', 'Sistema de Gestión');  
+}
   hideModalUser() {  
     let dialog = document.getElementById('popup-modal-user');  
     dialog!.classList.remove('showmodal');  
@@ -173,11 +169,19 @@ onRoleChange(event: Event, user: User): void {
   }  
   
   updateUser(user: User) {  
+    console.log('=== DEBUG updateUser (Frontend) ===');  
+    console.log('user.Id:', user.Id);  
+    console.log('user object completo:', user);  
+    console.log('Tipo de user.Id:', typeof user.Id);  
+    
   if (!user.Id) {  
     this.toastrSvc.error('ID de usuario no válido', 'Sistema de Gestión y de ventas');  
     return;  
   }  
-    
+    const userData = {  
+    ...user,  
+    Id: user.Id 
+  };  
   this.usersSvc.updateUser(user.Id, user).subscribe({  
     next: (response: any) => {  
       this.toastrSvc.success('El usuario fue actualizado con éxito', 'Sistema de Gestión y de ventas');  
