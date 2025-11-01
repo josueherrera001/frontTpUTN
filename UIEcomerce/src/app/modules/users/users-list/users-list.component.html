@@ -38,17 +38,12 @@
             <div class="flex items-center space-x-1">  
               <span>Teléfono</span>  
             </div>  
-          </th>  
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">  
-            <div class="flex items-center space-x-1">  
-              <span>Rol</span>  
-            </div>  
-          </th>  
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">  
-            <div class="flex items-center space-x-1">  
-              <span>Acciones</span>  
-            </div>  
-          </th>  
+          </th>   
+          <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">  
+  <div class="flex items-center justify-center space-x-1">  
+    <span>Acciones</span>  
+  </div>  
+</th>
         </tr>  
       </thead>  
   
@@ -76,34 +71,42 @@
               {{ user.Phone || 'N/A' }}  
             </div>  
           </td> 
-          <td class="px-6 py-4 whitespace-nowrap">  
-            <select   
-              [value]="user.Accounts?.[0]?.RoleId || ''"   
-              (change)="onRoleChange($event, user)"  
-              class="h-8 border rounded px-2 w-full bg-gray-50 text-sm text-gray-900 cursor-pointer hover:bg-gray-100">  
-              @for (role of roles(); track role.Id) {  
-                <option   
-                  [value]="role.Id"   
-                  [selected]="role.Id === user.Accounts?.[0]?.RoleId">  
-                  {{ role.Name }}  
-                </option>  
-              }  
-            </select>  
-          </td>
-          <td class="px-6 py-4 text-right text-sm font-medium">  
-            <div class="flex justify-center space-x-2">  
-              <button class="text-blue-600 hover:text-blue-900 transition-colors" data-title="Editar" data-modal-target="popup-modal-user" (click)="showModalCreateUser(user.Id,'Editar')">  
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">  
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>  
-                </svg>  
-              </button>  
-              <button (click)="showAlert(user.Id || '')" [disabled]="!user.Id" class="text-red-600 hover:text-red-900 transition-colors disabled:opacity-50" data-title="Eliminar">  
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">  
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />  
-                </svg>  
-              </button>  
-            </div>  
-          </td>  
+<td class="px-6 py-4 text-right text-sm font-medium">    
+  <div class="flex justify-center space-x-2">    
+    <!-- Botón Editar -->  
+    <button class="text-blue-600 hover:text-blue-900 transition-colors"   
+            data-title="Editar"   
+            data-modal-target="popup-modal-user"   
+            (click)="showModalCreateUser(user.Id,'Editar')">    
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">    
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"   
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>    
+      </svg>    
+    </button>  
+      
+          <!-- Botón Acciones -->  
+          <button class="text-purple-600 hover:text-purple-900 transition-colors"   
+                  data-title="Acciones"   
+                  (click)="showUserActions(user.Id || '')">  
+            <i class="fas fa-user-cog w-5 h-5"></i>  
+          </button>  
+                <button class="text-purple-600 hover:text-purple-900 transition-colors"     
+                  data-title="Editar Dirección"     
+                  (click)="showAddressModal(user.Id || '')">    
+            <i class="fas fa-map-marker-alt w-5 h-5"></i>    
+          </button>
+          <!-- Botón Eliminar -->  
+          <button (click)="showAlert(user.Id || '')"   
+                  [disabled]="!user.Id"   
+                  class="text-red-600 hover:text-red-900 transition-colors disabled:opacity-50"   
+                  data-title="Eliminar">    
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">    
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"   
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />    
+            </svg>    
+          </button>    
+        </div>    
+      </td>
         </tr>  
         }  
       </tbody>  
@@ -126,7 +129,7 @@
   
       <!-- Contenido con scroll -->  
       <div class="overflow-y-auto flex-1 p-4 md:p-5">  
-        <form [formGroup]="frmForm" class="form" (ngSubmit)="onSubmit()">  
+        <form [formGroup]="frmFormBasic" class="form" (ngSubmit)="onSubmitBasic()">  
           <input type="text" name="Id" hidden readonly id="Id" formControlName="Id">  
   
             <!-- Información Personal -->  
@@ -135,8 +138,8 @@
               <div>  
                 <label class="flex" for="FirstName">Nombre <p class="text-red-500">*</p></label>  
                 <input type="text" name="FirstName" id="FirstName" formControlName="FirstName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Nombre" />  
-                <div *ngIf="frmForm.get('FirstName')?.touched && frmForm.get('FirstName')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                  <div *ngIf="frmForm.get('FirstName')?.errors?.['required']">Nombre requerido</div>  
+                <div *ngIf="frmFormBasic.get('FirstName')?.touched && frmFormBasic.get('FirstName')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
+                  <div *ngIf="frmFormBasic.get('FirstName')?.errors?.['required']">Nombre requerido</div>  
                 </div>  
               </div>  
   
@@ -144,126 +147,21 @@
               <div>  
                 <label class="flex" for="LastName">Apellido <p class="text-red-500">*</p></label>  
                 <input type="text" name="LastName" id="LastName" formControlName="LastName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Apellido" />  
-                <div *ngIf="frmForm.get('LastName')?.touched && frmForm.get('LastName')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                  <div *ngIf="frmForm.get('LastName')?.errors?.['required']">Apellido requerido</div>  
+                <div *ngIf="frmFormBasic.get('LastName')?.touched && frmFormBasic.get('LastName')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
+                  <div *ngIf="frmFormBasic.get('LastName')?.errors?.['required']">Apellido requerido</div>  
                 </div>  
               </div>  
             </div>  
   
-            <!-- Email y Teléfono -->  
+            <!-- Teléfono -->  
             <div class="grid grid-cols-2 gap-4 mt-4">  
-              <!-- Email -->  
-              <div>  
-                <label class="flex" for="Email">Email <p class="text-red-500">*</p></label>  
-                <input type="email" name="Email" id="Email" formControlName="Email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="email@ejemplo.com" />  
-                <div *ngIf="frmForm.get('Email')?.touched && frmForm.get('Email')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                  <div *ngIf="frmForm.get('Email')?.errors?.['required']">Email requerido</div>  
-                  <div *ngIf="frmForm.get('Email')?.errors?.['email']">Email inválido</div>  
-                </div>  
-              </div>  
   
               <!-- Teléfono -->  
               <div>  
                 <label class="flex" for="Phone">Teléfono <p class="text-red-500">*</p></label>  
                 <input type="tel" name="Phone" id="Phone" formControlName="Phone" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Teléfono" />  
-                <div *ngIf="frmForm.get('Phone')?.touched && frmForm.get('Phone')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                  <div *ngIf="frmForm.get('Phone')?.errors?.['required']">Teléfono requerido</div>  
-                </div>  
-              </div>  
-            </div>  
-  
-            <!-- Credenciales -->  
-            <div formGroupName="auth" class="mt-4">  
-              <h3 class="text-lg font-semibold mb-2">Credenciales</h3>  
-              <div class="grid grid-cols-2 gap-4">  
-                <!-- Usuario -->  
-                <div>  
-                  <label class="flex" for="UserName">Usuario <p class="text-red-500">*</p></label>  
-                  <input type="text" name="UserName" id="UserName" formControlName="UserName" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Nombre de usuario" />  
-                  <div *ngIf="frmForm.get('auth.UserName')?.touched && frmForm.get('auth.UserName')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('auth.UserName')?.errors?.['required']">Usuario requerido</div>  
-                  </div>  
-                </div>  
-  
-                <!-- Contraseña -->  
-                <div>  
-                  <label class="flex" for="UserPass">Contraseña <p class="text-red-500">*</p></label>  
-                  <input type="password" name="UserPass" id="UserPass" formControlName="UserPass" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Contraseña" />  
-                  <div *ngIf="frmForm.get('auth.UserPass')?.touched && frmForm.get('auth.UserPass')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('auth.UserPass')?.errors?.['required']">Contraseña requerida</div>  
-                    <div *ngIf="frmForm.get('auth.UserPass')?.errors?.['minlength']">Mínimo 6 caracteres</div>  
-                  </div>  
-                </div>  
-              </div>  
-  
-              <!-- Rol -->  
-              <div class="mt-4">  
-                <label class="flex" for="RoleId">Rol <p class="text-red-500">*</p></label>  
-                <select name="RoleId" id="RoleId" formControlName="RoleId" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50">  
-                  <option value="">Seleccione un rol</option>  
-                  @for (role of roles(); track role.Id) {  
-                    <option [value]="role.Id">{{ role.Name }}</option>  
-                  }  
-                </select>  
-                <div *ngIf="frmForm.get('auth.RoleId')?.touched && frmForm.get('auth.RoleId')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                  <div *ngIf="frmForm.get('auth.RoleId')?.errors?.['required']">Rol requerido</div>  
-                </div>  
-              </div>  
-            </div>  
-  
-            <!-- Dirección -->  
-            <div formGroupName="address" class="mt-4">  
-              <h3 class="text-lg font-semibold mb-2">Dirección</h3>  
-              <div class="grid grid-cols-2 gap-4">  
-                <!-- País -->  
-                <div>  
-                  <label class="flex" for="Country">País <p class="text-red-500">*</p></label>  
-                 <input type="text" name="Country" id="Country" formControlName="Country" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="País" />  
-                  <div *ngIf="frmForm.get('address.Country')?.touched && frmForm.get('address.Country')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('address.Country')?.errors?.['required']">País requerido</div>  
-                  </div>  
-                </div>  
-  
-                <!-- Provincia -->  
-                <div>  
-                  <label class="flex" for="Province">Provincia <p class="text-red-500">*</p></label>  
-                  <input type="text" name="Province" id="Province" formControlName="Province" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Provincia" />  
-                  <div *ngIf="frmForm.get('address.Province')?.touched && frmForm.get('address.Province')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('address.Province')?.errors?.['required']">Provincia requerida</div>  
-                  </div>  
-                </div>  
-  
-                <!-- Ciudad -->  
-                <div>  
-                  <label class="flex" for="Location">Ciudad <p class="text-red-500">*</p></label>  
-                  <input type="text" name="Location" id="Location" formControlName="Location" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Ciudad" />  
-                  <div *ngIf="frmForm.get('address.Location')?.touched && frmForm.get('address.Location')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('address.Location')?.errors?.['required']">Ciudad requerida</div>  
-                  </div>  
-                </div>  
-  
-                <!-- Calle -->  
-                <div>  
-                  <label class="flex" for="Street">Calle <p class="text-red-500">*</p></label>  
-                  <input type="text" name="Street" id="Street" formControlName="Street" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Calle" />  
-                  <div *ngIf="frmForm.get('address.Street')?.touched && frmForm.get('address.Street')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('address.Street')?.errors?.['required']">Calle requerida</div>  
-                  </div>  
-                </div>  
-  
-                <!-- Número -->  
-                <div>  
-                  <label class="flex" for="Number">Número <p class="text-red-500">*</p></label>  
-                  <input type="text" name="Number" id="Number" formControlName="Number" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Número" />  
-                  <div *ngIf="frmForm.get('address.Number')?.touched && frmForm.get('address.Number')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
-                    <div *ngIf="frmForm.get('address.Number')?.errors?.['required']">Número requerido</div>  
-                  </div>  
-                </div>  
-  
-                <!-- Entre calles (opcional) -->  
-                <div class="col-span-2">  
-                  <label class="flex" for="Between">Entre calles</label>  
-                  <input type="text" name="Between" id="Between" formControlName="Between" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="Entre qué calles" />  
+                <div *ngIf="frmFormBasic.get('Phone')?.touched && frmFormBasic.get('Phone')?.invalid" class="text-lg text-red-700 p-2 mt-1">  
+                  <div *ngIf="frmFormBasic.get('Phone')?.errors?.['required']">Teléfono requerido</div>  
                 </div>  
               </div>  
             </div>  
@@ -273,7 +171,7 @@
               <button type="button" (click)="hideModalUser()" class="text-gray-700 bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">  
                 Cancelar  
               </button>  
-              <button type="submit" form="userForm" (click)="onSubmit()" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">  
+              <button type="submit" form="userForm" (click)="onSubmitBasic()" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">  
                 Guardar  
               </button>   
             </div>  

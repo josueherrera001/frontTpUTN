@@ -16,7 +16,7 @@ export interface User {
   Accounts?: Account[];  
   Addresses?: Address[];  
     
-  // Para el formulario (POST/PUT)  
+ 
   auth?: {  
     UserName: string;  
     UserPass: string;  
