@@ -67,7 +67,7 @@ export const routes: Routes = [
             loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')
           },
           {
-            path:'useractions',
+            path:'UserActions',
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/users/users-list/users-list.component')
           },
