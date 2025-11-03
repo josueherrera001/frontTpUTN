@@ -13,6 +13,7 @@ app.use( bodypPrser.json());
 const YOUR_DOMAIN = 'http://localhost:4242';
 
 app.post('/checkout', async (req, res) => {
+       debugger;
 
   const items = req.body.items.map(( item ) =>{
     try {
@@ -29,6 +30,7 @@ app.post('/checkout', async (req, res) => {
       quantity: item.qty
     }
     } catch (error) {
+       debugger;
       console.error( error)
     }
   })
