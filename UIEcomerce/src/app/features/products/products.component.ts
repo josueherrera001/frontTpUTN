@@ -31,6 +31,7 @@ export class ProductsComponent {
   private readonly cartStore = inject(CartStore);
 
   onAddToCart(product: Product): void {
+    debugger;
     this.cartStore.addToCart(product);
   }
 }

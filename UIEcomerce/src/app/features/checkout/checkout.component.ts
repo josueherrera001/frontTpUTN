@@ -28,10 +28,11 @@ constructor(private readonly auth:AuthService) {}
   //     return;
   // }
   debugger;
+    const max = 100;
     for (let index = 0; index < this.cartStore.products().length; index++) {
       const element = this.cartStore.products()[index];
       this.product.push({
-        id:0,
+        id:Math.random() * max,
         title: element.Name,
         price: element.subTotal!,
         qty: element.qty,
@@ -43,6 +44,17 @@ constructor(private readonly auth:AuthService) {}
       })
 
     }
+    /**
+     id:number;
+    title:string;
+    price:number;
+    category:string;
+    description:string;
+    image:string;
+    qty:number;
+    rating: number;
+    subTotal: number;
+     */
     this._checkoutSvc.onProceedToPay(this.product);
   }
 

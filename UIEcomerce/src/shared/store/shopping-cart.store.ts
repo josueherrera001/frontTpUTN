@@ -33,6 +33,7 @@ export const CartStore = signalStore(
             }
             else{
               product.qty = 1;
+              product.subTotal = product.lots[0].SalePrice;
             patchState(store,{ products: [...products(),product] });
             }
             toastrSvc.success('Producto agregado','TP UTN');
