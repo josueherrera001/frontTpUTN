@@ -17,7 +17,7 @@ export const authInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
     });
     return next(cloned);
   }
-  if(!req.url.includes('menus') && !req.url.includes('products'))
-    router.navigate(['/auth']);
+  // if(!req.url.includes('menus') && !req.url.includes('products'))
+  //   router.navigate(['/auth']);
   return next(req);
 };

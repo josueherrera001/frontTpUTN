@@ -6,6 +6,7 @@ import { Account } from 'shared/models/Account';
 import { AccountWithMenus } from 'shared/models/Authmenues/accountWithMenus';
 import { User } from 'shared/models/user';
 import { environment } from 'environments/environment';
+import { Menu } from 'shared/models/Authmenues/menu';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +45,8 @@ export class UserMenuService {
   }
 
   // Obtener usuario con menús
-  getUserWithMenus(AccounrId: string): Observable<AccountWithMenus> {
-    return this._http.get<AccountWithMenus>(`${this._endpoint}accountmenuitem/${AccounrId}/full`);
+  getUserWithMenus(AccounrId: string): Observable<Menu> {
+    return this._http.get<Menu>(`${this._endpoint}accountmenuitem/${AccounrId}/full`);
   }
 
   // Seleccionar usuario

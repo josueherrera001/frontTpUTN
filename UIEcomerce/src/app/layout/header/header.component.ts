@@ -10,12 +10,13 @@ import { MenuService } from 'shared/services/menu.service';
 import { TaskService } from 'shared/services/task.service';
 import { UserMenuService } from 'shared/services/user.menu.service';
 import { CartStore } from 'shared/store/shopping-cart.store';
+import SpinnerComponent from "../../../shared/components/spinner.component";
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, NgClass, CurrencyPipe, SlicePipe, RouterOutlet,JsonPipe],
+  imports: [RouterLink, NgClass, CurrencyPipe, SlicePipe, RouterOutlet, JsonPipe, SpinnerComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -26,8 +27,9 @@ export class HeaderComponent implements OnInit {
 
   public menulist: AccountWithMenus[] =[]
 
-  private readonly menus = inject( MenuService);
+  // private readonly menus = inject( MenuService);
   public menus$:Menu[] = [];
+  UserName:string ="";
 
   constructor(
       private readonly taskService: TaskService,
@@ -38,25 +40,28 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
      let token = this.taskService.getJwtToken();
      if( token ){
-        const tokensObj: Tokens = DecoderTokenService.decodeToken(token);
+        const tokensObj:any = DecoderTokenService.decodeToken(token);
         this.getMenu(tokensObj.Id);
+        this.UserName = tokensObj.UserName;
      }
      else{
-
+        this.getMenu("withoutlogin");
      }
   }
 
   getMenu(AccountId: string){
+    this.menus$ = [];
     this.usermemnusvc.getUserWithMenus(AccountId).subscribe( ( menu:any ) =>{
      debugger;
-     menu[0].AccountMenu.forEach((element:any) => {
-     console.log(element.Menu);
-      this.menus$.push(element.Menu);
+     menu.forEach((element:any) => {
+          this.menus$.push(element);
      });
     });
   }
 
  logout(): void {
-    this.taskService.logout();
+      this.taskService.logout();
+      location.reload();
+      window.location.href ='/products/products'
   }
 }

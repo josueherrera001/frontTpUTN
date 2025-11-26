@@ -40,7 +40,12 @@
         </button>
 
         <div class="flex items-center">
-          <a routerLink="/products" class="mr-6">Productos</a>
+          @if( this.authService.isAuthenticated()){
+            <h3 class="pr-2">Hola <strong>{{ UserName }}</strong></h3>
+          }
+          @else {
+            <a routerLink="/products" class="mr-6">Usuario no conectado</a>
+          }
           <div class="relative" (mouseenter)="showCart.set(true)" (mouseleave)="showCart.set(false)">
             <a routerLink="/products/checkout">
               <svg fill="none" height="25" viewBox="0 0 15 15" width="25" xmlns="http://www.w3.org/2000/svg">
@@ -243,8 +248,8 @@
 </nav>
 <div class="flex flex-1 items-center justify-center  p-2">
   <main class="flex-1 p-6 bg-gray-50 dark:bg-gray-900 overflow-auto width-full h-full">
+    <!-- <app-spinner/> -->
     <router-outlet>
     </router-outlet>
   </main>
-  <!-- <app-spinner/> -->
 </div>

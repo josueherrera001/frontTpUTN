@@ -17,7 +17,6 @@ export class TaskService {
 
     private readonly JWT_TOKEN = 'JWT_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  private readonly RoleUser = 'ROLE';
   private readonly ROLE = 'ROLE';
 
   private email:any;
@@ -46,10 +45,11 @@ export class TaskService {
   }
 
   logout(): void{
+    this.removeTokens();
     this._http.post(`${ this._endpoint }/logout`, {}).subscribe( ( resp:any ) =>{
       debugger;
       if(resp.success){
-          this.removeTokens();
+          // this.removeTokens();
            this.router.navigate(['/login']);
       }
     });
@@ -91,7 +91,7 @@ export class TaskService {
   private removeTokens() {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
-    localStorage.removeItem(this.RoleUser);
+    localStorage.removeItem(this.ROLE);
   }
   doLoginUser(username: string, tokens: string) {
     this.loggedUser = username;

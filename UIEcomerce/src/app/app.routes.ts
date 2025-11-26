@@ -26,19 +26,19 @@ export const routes: Routes = [
           {
             path: 'ProductActions',
             component: ProductFormComponent,
-            // canActivate: [roleGuard],
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] } // formulario standalone
           },
           {
             path: 'suplierActions',
             component: SupplierListComponent,
-            // canActivate: [roleGuard],
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] } // formulario standalone
           },
           {
             path: 'presentationactions',
             component: PresentationsComponent,
-            // canActivate: [roleGuard],
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] } // formulario standalone
           },
           {
@@ -52,7 +52,7 @@ export const routes: Routes = [
           },
           {
             path:'categoryactions',
-            // canActivate: [roleGuard,authGuardGuard],
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/categories/category-list/category-list.component') // componente standalone
           },
@@ -63,20 +63,27 @@ export const routes: Routes = [
           },
        {
             path:'supplieractions',
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/suppliers/supplier-list/supplier-list.component')
           },
           {
             path:'UserActions',
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/users/users-list/users-list.component')
           },
           {
             path:'assignmenu',
+            canActivate:[authGuardGuard,roleGuard],
             data: { roles: ['Admin'] },
             loadComponent: () => import('./modules/assignuser/assignuser.component').then( u => u.AssignuserComponent)
           }
         ]
+      },
+      {
+        path:'unauthorized',
+        loadComponent: () => import('./modules/unauthorized/unauthorized.component').then( u => u.UnauthorizedComponent)
       }
       ,
       { path:'',redirectTo: 'products', pathMatch:'full' },

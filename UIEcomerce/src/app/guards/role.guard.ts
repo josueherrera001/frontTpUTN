@@ -3,6 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'shared/services/auth.service';
 
 export const roleGuard: CanActivateFn = (route, state) => {
+  debugger;
   const auth = inject(AuthService);
   const router = inject(Router);
   /*Obtain the required roles from route data*/

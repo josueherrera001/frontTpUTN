@@ -37,8 +37,14 @@ export class AuthService {
   }
 
   hasAnyRole(roles: string[]): boolean {
-    const userRoles = JSON.parse(localStorage.getItem('ROLE') || '[]') as Array<string>;
-    const hasRole = userRoles.some(role => roles.includes(role));
-    return hasRole;
+    debugger;
+    // const userRoles = JSON.parse(localStorage.getItem('ROLE') || '[]') as Array<string>;
+    // const hasRole = userRoles.some(role => roles.includes(role));
+     const userRoles = localStorage.getItem('ROLE');
+     let role:string ="";
+     if ( userRoles != undefined)
+       role = userRoles.toString();
+    // const hasRole = roles.includes(role);
+    return roles.includes(role);
   }
 }
