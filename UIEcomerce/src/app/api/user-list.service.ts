@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";  
 import { environment } from "environments/environment";  
 import { tap } from "rxjs";  
+import { Address } from "shared/models/address";
 import { User } from "shared/models/user-list";  
   
 @Injectable({providedIn: 'root'})  
@@ -42,4 +43,23 @@ export class UsersService {
     public deleteUser(id: string) {  
         return this._http.delete(`${this._endpoint}users/${id}`);  
     }  
+     // POST: create ADDRESS    
+    public addAddress(address: Address) {    
+        return this._http.post<Address>(`${this._endpoint}addresses`, address);    
+    }    
+  
+    // PUT: update ADDRESS    
+    public updateAddress(id: string, address: Partial<Address>) {    
+        return this._http.put<Address>(`${this._endpoint}addresses/${id}`, address);    
+    }    
+  
+    // DELETE: delete ADDRESS    
+    public deleteAddress(id: string) {    
+        return this._http.delete(`${this._endpoint}addresses/${id}`);    
+    }    
+  
+    // GET ADDRESSES BY USER ID    
+    public getAddressesByUserId(userId: string) {    
+        return this._http.get<Address[]>(`${this._endpoint}addresses/user/${userId}`);    
+    }    
 }
