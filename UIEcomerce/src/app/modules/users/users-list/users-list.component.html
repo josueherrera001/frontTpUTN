@@ -180,3 +180,148 @@
     </div>
   </div>
 </div>
+<!-- Modal de Gestión de Direcciones -->  
+<div id="popup-modal-addresses" tabindex="-1"   
+     class="bg-black bg-opacity-50 w-screen h-screen hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center md:inset-0 max-h-full">  
+  <div class="relative p-4 w-full max-h-full items-center justify-center flex">  
+    <div class="relative bg-white rounded-lg shadow-sm lg:w-[60rem] md:w-3/4 sm:w-full max-h-[90vh] flex flex-col">  
+        
+      <!-- Encabezado -->  
+      <div class="bg-indigo-600 p-6 text-white rounded-t-lg">  
+        <div class="flex items-center justify-between">  
+          <div class="flex items-center">  
+            <i class="fas fa-map-marker-alt text-2xl mr-3"></i>  
+            <h1 class="text-2xl font-bold">{{ addressMsgHeader }}</h1>  
+          </div>  
+        </div>  
+        <p class="mt-2 text-indigo-100">{{ addressMsgBody }}</p>  
+      </div>  
+  
+      <!-- Contenido con scroll -->  
+      <div class="overflow-y-auto flex-1 p-4 md:p-5">  
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">  
+            
+          <!-- Lista de Direcciones Existentes -->  
+          <div class="bg-gray-50 rounded-lg p-4">  
+            <h3 class="text-lg font-semibold mb-4">Direcciones Registradas</h3>  
+            <div class="space-y-3 max-h-96 overflow-y-auto">  
+              @for (address of addresses(); track address.Id) {  
+                <div class="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">  
+                  <div class="flex justify-between items-start">  
+                    <div class="flex-1">  
+                      <p class="font-medium text-gray-900">{{ address.Street }} {{ address.StreetNumber }}</p>  
+                      <p class="text-sm text-gray-600">{{ address.Location }}, {{ address.Province }}</p>  
+                      <p class="text-sm text-gray-600">{{ address.Country }}</p>  
+                      @if (address.BetweenStreet) {  
+                        <p class="text-sm text-gray-500">Entre: {{ address.BetweenStreet }}</p>  
+                      }  
+                    </div>  
+                    <div class="flex space-x-2">  
+                      <button class="text-blue-600 hover:text-blue-900"   
+                              (click)="editAddress(address)" title="Editar">  
+                        <i class="fas fa-edit"></i>  
+                      </button>  
+                      <button class="text-red-600 hover:text-red-900"   
+                              (click)="deleteAddress(address.Id || '')" title="Eliminar">  
+                        <i class="fas fa-trash"></i>  
+                      </button>  
+                    </div>  
+                  </div>  
+                </div>  
+              }  
+              @if (addresses().length === 0) {  
+                <div class="text-center text-gray-500 py-8">  
+                  <i class="fas fa-map-marker-alt text-4xl mb-2"></i>  
+                  <p>No hay direcciones registradas</p>  
+                </div>  
+              }  
+            </div>  
+          </div>  
+  
+          <!-- Formulario de Agregar/Editar Dirección -->  
+          <div class="bg-white rounded-lg p-4">  
+            <h3 class="text-lg font-semibold mb-4">  
+              {{ frmAddressForm.value.Id ? 'Editar Dirección' : 'Agregar Nueva Dirección' }}  
+            </h3>  
+            <form [formGroup]="frmAddressForm" (ngSubmit)="onSubmitAddress()">  
+              <input type="text" name="Id" hidden formControlName="Id">  
+              <input type="text" name="UserId" hidden formControlName="UserId">  
+                
+              <div class="space-y-4">  
+                <div class="grid grid-cols-2 gap-4">  
+                  <div>  
+                    <label class="block text-sm font-medium text-gray-700">Calle <span class="text-red-500">*</span></label>  
+                    <input type="text" formControlName="Street"   
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">  
+                    <div *ngIf="frmAddressForm.get('Street')?.touched && frmAddressForm.get('Street')?.invalid"   
+                         class="text-red-500 text-sm mt-1">  
+                      Calle requerida  
+                    </div>  
+                  </div>  
+                  <div>  
+                    <label class="block text-sm font-medium text-gray-700">Número <span class="text-red-500">*</span></label>  
+                    <input type="text" formControlName="StreetNumber"  
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">  
+                    <div *ngIf="frmAddressForm.get('StreetNumber')?.touched && frmAddressForm.get('StreetNumber')?.invalid"   
+                         class="text-red-500 text-sm mt-1">  
+                      Número requerido  
+                    </div>  
+                  </div>  
+                </div>  
+  
+                <div>  
+                  <label class="block text-sm font-medium text-gray-700">Entre calles</label>  
+                  <input type="text" formControlName="BetweenStreet"  
+                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"  
+                         placeholder="Entre calle A y calle B">  
+                </div>  
+  
+                <div>  
+                  <label class="block text-sm font-medium text-gray-700">País <span class="text-red-500">*</span></label>  
+                  <input type="text" formControlName="Country"  
+                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">  
+                  <div *ngIf="frmAddressForm.get('Country')?.touched && frmAddressForm.get('Country')?.invalid"   
+                       class="text-red-500 text-sm mt-1">  
+                    País requerido  
+                  </div>  
+                </div>  
+  
+                <div class="grid grid-cols-2 gap-4">  
+                  <div>  
+                    <label class="block text-sm font-medium text-gray-700">Provincia <span class="text-red-500">*</span></label>  
+                    <input type="text" formControlName="Province"  
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">  
+                    <div *ngIf="frmAddressForm.get('Province')?.touched && frmAddressForm.get('Province')?.invalid"   
+                         class="text-red-500 text-sm mt-1">  
+                      Provincia requerida  
+                    </div>  
+                  </div>  
+                  <div>  
+                    <label class="block text-sm font-medium text-gray-700">Localidad <span class="text-red-500">*</span></label>  
+                    <input type="text" formControlName="Location"  
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">  
+                    <div *ngIf="frmAddressForm.get('Location')?.touched && frmAddressForm.get('Location')?.invalid"   
+                         class="text-red-500 text-sm mt-1">  
+                      Localidad requerida  
+                    </div>  
+                  </div>  
+                </div>  
+              </div>  
+  
+              <div class="mt-6 flex justify-end space-x-3">  
+                <button type="button" (click)="hideAddressModal()"   
+                        class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">  
+                  Cancelar  
+                </button>  
+                <button type="submit"   
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">  
+                  {{ frmAddressForm.value.Id ? 'Actualizar' : 'Agregar' }}  
+                </button>  
+              </div>  
+            </form>  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+</div>

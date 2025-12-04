@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';  
-import { Component, inject } from '@angular/core';  
+import { Component, inject, signal } from '@angular/core';  
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';  
 import { UsersService } from '@api/user-list.service';  
 import { RolesService } from '@api/role.service';  
@@ -7,6 +7,7 @@ import { User } from 'shared/models/user-list';
 import { ToastrService } from "ngx-toastr";  
 import Swal from 'sweetalert2';  
 import { ProvincesService } from '@api/provinces.service'; 
+import { Address } from 'shared/models/address';
   
 @Component({  
   selector: 'app-users-list',  
@@ -17,13 +18,19 @@ import { ProvincesService } from '@api/provinces.service';
 })  
 export default class UsersListComponent {  
   frmFormBasic!: FormGroup; 
-  
+  frmAddressForm!: FormGroup;  
+
   public titlemsg: String = 'Lista de Usuarios';  
   public headeremsg: String = 'En esta pantalla se va a poder ver todos los usuarios disponibles y manipularlos (Modificar, eliminar y agregar)';  
   
   public msgheader: String = 'Agregar Usuario';  
   public msgbody: String = 'Gestione los usuarios del sistema. Puede agregar nuevos usuarios, editar los existentes o eliminarlos si ya no son necesarios.';  
   
+  public addressMsgHeader: String = 'Gestión de Direcciones';  
+  public addressMsgBody: String = 'Administre las direcciones del usuario seleccionado.';  
+  selectedUserId: string = '';  
+  addresses = signal<Address[]>([]); 
+
   private readonly usersSvc = inject(UsersService);  
   private readonly rolesSvc = inject(RolesService);  
   private readonly toastrSvc = inject(ToastrService);  
@@ -33,7 +40,8 @@ export default class UsersListComponent {
   roles = this.rolesSvc.roles;  
   
   constructor(private readonly fb: FormBuilder) {  
-    this.createForm();  
+    this.createForm();
+    this.createAddressForm();  
   }  
   
   private createForm(): void {  
@@ -44,6 +52,20 @@ export default class UsersListComponent {
     Phone: ['', [Validators.required]]  
   });  
   }  
+  private createAddressForm(): void {  
+    this.frmAddressForm = this.fb.group({  
+      Id: [''],  
+      UserId: [''],  
+      Street: ['', [Validators.required]],  
+      StreetNumber: ['', [Validators.required]],  
+      BetweenStreet: [''],  
+      Country: ['', [Validators.required]],  
+      Province: ['', [Validators.required]],  
+      Location: ['', [Validators.required]]  
+    });  
+  }  
+
+
 showModalCreateUser(Id: string = '', option: String) {    
         if (option === 'Editar') {  
         this.msgheader = 'Editar Usuario';  
@@ -75,7 +97,44 @@ showModalCreateUser(Id: string = '', option: String) {
     dialog!.classList.add('hiddenmodal');  
     this.frmFormBasic.reset();  
   }  
-  
+    
+  showAddressModal(userId: string): void {  
+      this.selectedUserId = userId;  
+      this.loadUserAddresses(userId);  
+      this.addressMsgHeader = 'Gestión de Direcciones';  
+      this.addressMsgBody = 'Administre las direcciones del usuario seleccionado.';  
+      this.resetAddressForm();  
+        
+      let dialog = document.getElementById('popup-modal-addresses');  
+      dialog!.classList.remove('hiddenmodal');  
+      dialog!.classList.add('showmodal');  
+    }  
+    
+    hideAddressModal(): void {  
+      let dialog = document.getElementById('popup-modal-addresses');  
+      dialog!.classList.remove('showmodal');  
+      dialog!.classList.add('hiddenmodal');  
+      this.resetAddressForm();  
+    }  
+    
+    private loadUserAddresses(userId: string): void {  
+      this.usersSvc.getUserById(userId).subscribe({  
+        next: (user: User) => {  
+          this.addresses.set(user.Addresses || []);  
+        },  
+        error: () => {  
+          this.toastrSvc.error('Error al cargar direcciones', 'Sistema de Gestión');  
+        }  
+      });  
+    }  
+    
+    public resetAddressForm(): void {  
+      this.frmAddressForm.reset();  
+      this.frmAddressForm.patchValue({  
+        UserId: this.selectedUserId  
+      });  
+    }  
+
   onSubmitBasic() {  
   if (this.frmFormBasic.valid) {  
     const userId = this.frmFormBasic.value.Id;  
@@ -99,6 +158,76 @@ showModalCreateUser(Id: string = '', option: String) {
     this.frmFormBasic.markAllAsTouched();  
   }  
 }   
+  onSubmitAddress(): void {  
+    if (this.frmAddressForm.valid) {  
+      const addressData = {  
+        ...this.frmAddressForm.value,  
+        UserId: this.selectedUserId  
+      };  
+  
+      if (addressData.Id) {  
+        this.updateAddress(addressData);  
+      } else {  
+        this.createAddress(addressData);  
+      }  
+    } else {  
+      this.frmAddressForm.markAllAsTouched();  
+    }  
+  } 
+    private createAddress(address: any): void {  
+    this.usersSvc.addAddress(address).subscribe({  
+      next: () => {  
+        this.toastrSvc.success('Dirección agregada con éxito', 'Sistema de Gestión');  
+        this.loadUserAddresses(this.selectedUserId);  
+        this.resetAddressForm();  
+      },  
+      error: () => {  
+        this.toastrSvc.error('Error al agregar dirección', 'Sistema de Gestión');  
+      }  
+    });  
+  }  
+  
+  private updateAddress(address: any): void {  
+    this.usersSvc.updateAddress(address.Id, address).subscribe({  
+      next: () => {  
+        this.toastrSvc.success('Dirección actualizada con éxito', 'Sistema de Gestión');  
+        this.loadUserAddresses(this.selectedUserId);  
+        this.resetAddressForm();  
+      },  
+      error: () => {  
+        this.toastrSvc.error('Error al actualizar dirección', 'Sistema de Gestión');  
+      }  
+    });  
+  }  
+  
+  editAddress(address: Address): void {  
+    this.frmAddressForm.patchValue(address);  
+    this.addressMsgHeader = 'Editar Dirección';  
+    this.addressMsgBody = 'Modifique los datos de la dirección seleccionada.';  
+  }  
+  
+  deleteAddress(addressId: string): void {  
+    Swal.fire({  
+      title: '¿Estás seguro de eliminar esta dirección?',  
+      text: 'No podrás revertir esto!',  
+      icon: 'warning',  
+      showCancelButton: true,  
+      confirmButtonText: 'Aceptar',  
+      cancelButtonText: 'Cancelar'  
+    }).then((result) => {  
+      if (result.isConfirmed) {  
+        this.usersSvc.deleteAddress(addressId).subscribe({  
+          next: () => {  
+            this.toastrSvc.success('Dirección eliminada con éxito', 'Sistema de Gestión');  
+            this.loadUserAddresses(this.selectedUserId);  
+          },  
+          error: () => {  
+            this.toastrSvc.error('Error al eliminar dirección', 'Sistema de Gestión');  
+          }  
+        });  
+      }  
+    });  
+  }
   
   addUser(newUser: User) {  
     this.usersSvc.createUser(newUser).subscribe({  
@@ -138,10 +267,7 @@ showModalCreateUser(Id: string = '', option: String) {
     console.log('Mostrar acciones para usuario:', userId);  
     this.toastrSvc.info('Funcionalidad de acciones en desarrollo', 'Sistema de Gestión');  
   }  
-  showAddressModal(userId: string): void {  
-    console.log('Mostrar acciones para usuario:', userId);  
-    this.toastrSvc.info('Funcionalidad de acciones en desarrollo', 'Sistema de Gestión');  
-  }  
+ 
   showAlert(id: string): void {  
     const swalWithBootstrapButtons = Swal.mixin({  
       customClass: {  
