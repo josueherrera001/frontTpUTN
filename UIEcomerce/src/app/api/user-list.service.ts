@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable, inject, signal } from "@angular/core";  
 import { environment } from "environments/environment";  
 import { tap } from "rxjs";  
+import { map } from 'rxjs';
 import { Address } from "shared/models/address";
 import { User } from "shared/models/user-list";  
   
@@ -24,10 +25,22 @@ export class UsersService {
             .subscribe();  
     }  
   
+  
     // GET USER BY ID  
     public getUserById(id: string) {  
-        return this._http.get<User>(`${this._endpoint}users/${id}`);  
-    }  
+    return this._http.get<User>(`${this._endpoint}users/${id}`).pipe(  
+        map((user: User) => {   
+        if (user.Addresses) {  
+            user.Addresses = user.Addresses.map((address: any) => ({  
+            ...address,  
+            StreetNumber: address.Number,    
+            BetweenStreet: address.Between   
+            }));  
+        }  
+        return user;  
+        })  
+    );  
+    }
   
     // POST: create USER  
     public createUser(user: any) {  

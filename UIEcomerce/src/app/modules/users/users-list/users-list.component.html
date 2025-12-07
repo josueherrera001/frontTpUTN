@@ -11,7 +11,19 @@
   </div>
   <p class="mt-2 text-center font-bold text-indigo-100">En esta pantalla se va a poder ver todos los usuarios disponibles y manipularlos (Modificar, eliminar y agregar)</p>
 </div>
-
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">  
+  <div class="flex items-center space-x-4">  
+    <label class="text-sm font-medium text-gray-700">Filtrar por estado:</label>  
+    <select   
+      class="border border-gray-300 rounded-md px-3 py-2 text-sm"  
+      (change)="selectedState.set($any($event.target).value)"  
+    >  
+      <option value="all">Todos</option>  
+      <option value="1">Activados</option>  
+      <option value="2">Desactivados</option>  
+    </select>  
+  </div>  
+</div>
 <!-- Tabla -->
 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
   <div class="overflow-hidden">
@@ -38,7 +50,12 @@
             <div class="flex items-center space-x-1">
               <span>Teléfono</span>
             </div>
-            </th>   
+            </th> 
+            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">  
+              <div class="flex items-center justify-center space-x-1">  
+                <span>Estado</span>  
+              </div>  
+            </th>  
           <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">  
             <div class="flex items-center justify-center space-x-1">  
               <span>Acciones</span>  
@@ -49,7 +66,7 @@
 
       <!-- Cuerpo -->
       <tbody class="bg-white divide-y divide-gray-200">
-        @for (user of users(); track user.Id) {
+        @for (user of filteredUsers(); track user.Id) {
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-6 py-4 whitespace-nowrap">
             <div class="text-sm font-medium text-gray-900">
@@ -71,7 +88,19 @@
               {{ user.Phone || 'N/A' }}
             </div>
           </td>
-<td class="px-6 py-4 text-right text-sm font-medium">    
+<td class="px-6 py-4 whitespace-nowrap text-center">  
+  @if (user.State === 1) {  
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">  
+      Activado  
+    </span>  
+  } @else if (user.State === 2) {  
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">  
+      Desactivado  
+    </span>  
+  }  
+</td>
+
+      <td class="px-6 py-4 text-right text-sm font-medium">    
   <div class="flex justify-center space-x-2">    
     <!-- Botón Editar -->  
     <button class="text-blue-600 hover:text-blue-900 transition-colors"   

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';  
-import { Component, inject, signal } from '@angular/core';  
+import { Component, inject, signal, computed } from '@angular/core';  
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';  
 import { UsersService } from '@api/user-list.service';  
 import { RolesService } from '@api/role.service';  
@@ -19,7 +19,7 @@ import { Address } from 'shared/models/address';
 export default class UsersListComponent {  
   frmFormBasic!: FormGroup; 
   frmAddressForm!: FormGroup;  
-
+  selectedState = signal<number | 'all'>('all');
   public titlemsg: String = 'Lista de Usuarios';  
   public headeremsg: String = 'En esta pantalla se va a poder ver todos los usuarios disponibles y manipularlos (Modificar, eliminar y agregar)';  
   
@@ -65,7 +65,14 @@ export default class UsersListComponent {
     });  
   }  
 
-
+filteredUsers = computed(() => {  
+  const users = this.users();  
+  const selected = this.selectedState();  
+    
+  if (selected === 'all') return users;    
+  const stateNumber = Number(selected);  
+  return users.filter(user => user.State === stateNumber);  
+});
 showModalCreateUser(Id: string = '', option: String) {    
         if (option === 'Editar') {  
         this.msgheader = 'Editar Usuario';  
